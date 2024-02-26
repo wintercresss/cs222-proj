@@ -13,6 +13,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const themeLight = createTheme({
+  palette: {
+    background: {
+      default: "#ffffff"
+    },
+    text: {
+      primary: "#1DB954",
+      secondary: "#1DB954"
+    }
+  }
+});
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -26,8 +38,6 @@ function Copyright(props) {
   );
 }
 
-const defaultTheme = createTheme();
-
 export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,7 +49,7 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
