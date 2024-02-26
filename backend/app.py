@@ -37,8 +37,10 @@ def authenticate():
     for user in users_login_data:
         if(user['username']== usrname and user['password'] ==  password):
             return jsonify({'message': 'Successfully Authenticated'}), 200
+        if(user['username']== usrname and user['password'] !=  password):
+            return jsonify({'message': 'Wrong Password'}), 400
         
-    return jsonify({'message': 'Authentication failed'}), 400
+    return jsonify({'message': 'User doesn\'t exist'}), 400
 
 
 if __name__ == '__main__':
