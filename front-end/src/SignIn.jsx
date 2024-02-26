@@ -8,7 +8,6 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -19,8 +18,8 @@ const themeLight = createTheme({
       default: "#ffffff"
     },
     text: {
-      primary: "#1DB954",
-      secondary: "#1DB954"
+      primary: "#191414",
+      secondary: "#191414"
     }
   }
 });
@@ -60,11 +59,12 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Avatar
+            src="/Spotify_logo_without_text.svg.png"
+            sx={{ width: 56, height: 56 }} // Customize size as needed
+          />
           <Typography component="h1" variant="h5">
-            Sign in
+            Welcome to Sportify Assistance!
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -95,7 +95,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
             >
               Sign In
             </Button>
