@@ -38,7 +38,7 @@ def authenticate():
         if(user['username']== usrname and user['password'] ==  password):
             return jsonify({'message': 'Successfully Authenticated'}), 200
         if(user['username']== usrname and user['password'] !=  password):
-            return jsonify({'message': 'Wrong password'}), 200
+            return jsonify({'message': 'Wrong Password'}), 400
         
     return jsonify({'message': 'User doesn\'t exist'}), 400
 
