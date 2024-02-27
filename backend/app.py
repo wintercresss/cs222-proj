@@ -49,8 +49,7 @@ def authenticate():
     usr_data = request.get_json()
     password = usr_data.get('password')
     usrname = usr_data.get('username')
-
-
+    
     for user in users_login_data:
         if user['username']== usrname:
             if check_password(password, user['password'].encode('utf-8')):
