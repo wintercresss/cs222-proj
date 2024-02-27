@@ -2,6 +2,7 @@ from flask import Flask, request, make_response, jsonify
 # from flask_sqlalchemy import SQLAlchemy
 import os
 import json
+import bcrypt
 
 app = Flask(__name__)
 
@@ -14,6 +15,17 @@ def get_data_from_file():
 
 users_login_data = get_data_from_file()
 
+# hash password during registration
+def hash_password(password):
+    bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(bytes, salt)
+
+    return hashed_password
+
+def check_password(entered_password, stored_hashed_password): # for user login authentication
+    return bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password)
+
 @app.route('/add_user', methods =['POST'])
 def add_user():
     usr_data = request.get_json()
@@ -24,7 +36,9 @@ def add_user():
         if(user['username']== usrname):
             return jsonify({'message': 'Username exists'}), 400
     
-    users_login_data.append({'username':usrname, 'password':password })   
+    hashed_password = hash_password(password)
+    
+    users_login_data.append({'username':usrname, 'password':hashed_password.decode('utf-8')}) # have to decode to utf-8 format, or else it can't be stored in JSON format
     with open('users_login_data.json', 'w') as fil:
         json.dump(users_login_data,fil)
     return jsonify({'message': 'User added sucessfully'}), 200
@@ -37,12 +51,14 @@ def authenticate():
     usrname = usr_data.get('username')
     
     for user in users_login_data:
-        if(user['username']== usrname and user['password'] ==  password):
-            return jsonify({'message': 'Successfully Authenticated'}), 200
-        if(user['username']== usrname and user['password'] !=  password):
-            return jsonify({'message': 'Wrong Password'}), 400
+        if user['username']== usrname:
+            if check_password(password, user['password'].encode('utf-8')):
+                return jsonify({'message': 'Successfully Authenticated'}), 200
+            else:
+                return jsonify({'message': 'Wrong Password'}), 400
         
     return jsonify({'message': 'User doesn\'t exist'}), 400
+
 
 
 if __name__ == '__main__':
