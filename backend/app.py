@@ -16,8 +16,9 @@ users_login_data = get_data_from_file()
 
 @app.route('/add_user', methods =['POST'])
 def add_user():
-    password = request.form.get('password')
-    usrname = request.form.get('username')
+    usr_data = request.get_json()
+    password = usr_data.get('password')
+    usrname = usr_data.get('username')
     
     for user in users_login_data:
         if(user['username']== usrname):
@@ -31,8 +32,9 @@ def add_user():
 
 @app.route('/authenticate', methods =['POST'])
 def authenticate():
-    password = request.form.get('password')
-    usrname = request.form.get('username')
+    usr_data = request.get_json()
+    password = usr_data.get('password')
+    usrname = usr_data.get('username')
     
     for user in users_login_data:
         if(user['username']== usrname and user['password'] ==  password):
