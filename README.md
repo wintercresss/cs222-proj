@@ -6,9 +6,9 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
 ## Week 7:
      Progress towards previous week objectives:
         - Backend: add_user, authenticate APIs implemented and tested 
-        - Frontend: 
+        - Frontend: completed the login webpage
      Current Week Objectives:
         - Backend: Develop the wordcloud feature and possibly look into adding song recommendations 
-        - Frontend: 
+        - Frontend: create the wordcloud display page 
         
 ## Week 8:
