@@ -3,8 +3,20 @@ from flask import Flask, request, make_response, jsonify
 import os
 import json
 import bcrypt
+from wordcloud import WordCloud
+import matplotlib.pyplot as plot
+
+import matplotlib
+matplotlib.use('Agg')  
+
+import base64
+from io import BytesIO
+import pandas as pd
 
 app = Flask(__name__)
+
+# Read the spotify songs data file 
+spotify_songs_data = pd.read_csv('Spotify_Million_Song_Dataset_exported.csv')
 
 def get_data_from_file():
     try: 
@@ -59,7 +71,44 @@ def authenticate():
         
     return jsonify({'message': 'User doesn\'t exist'}), 400
 
+@app.route('/lyrics_wordcloud', methods =['POST'])
+def lyrics_wordcloud():
+    try:
+        lyrics_data = request.get_json()
+        songs = lyrics_data.get('lyrics')
+        combined_string = ' '.join(songs)
+        lyrics_cloud = WordCloud( height = 500, width = 1000, background_color= 'yellow').generate(combined_string)
+        
+        plot.figure(figsize=(20,10))
+        plot.axis('off') # Remove the axes from the image to not clutter the image
+        plot.imshow(lyrics_cloud) 
+        image_as_bytes = BytesIO() # creates a temporary binary IO stream object that behaves like a file 
+        plot.savefig(image_as_bytes, format ='png')
+        image_as_bytes.seek(0) # Read the bytes from the beginning
+        plot.close()
 
+        return jsonify({'message': 'Worcloud generated', 
+                        'wordcloud_image_as_bytes': base64.b64encode(image_as_bytes.read()).decode('utf-8')}), 200
+
+    except Exception as exc:
+        print(exc)
+        return jsonify({'message': 'Worcloud cannot be generated'}), 400
+ 
+@app.route('/search_lyrics', methods =['POST'])
+def search_lyrics():
+    song_to_search = request.get_json().get('search_song')
+    response_rows_true = spotify_songs_data['song'].str.contains(song_to_search, regex= False, case = False)
+    search_result = spotify_songs_data[response_rows_true]
+    
+    if search_result.empty == True:
+        return jsonify({'message': 'Song is not found'}), 400
+    
+    song_details = search_result.iloc[0] # Extract the row 1 details from the search result dataframe 
+    print(song_details['text'])
+    
+    return jsonify({'message': 'Song is found', 'lyrics': song_details['text']}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
