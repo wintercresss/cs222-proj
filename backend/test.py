@@ -3,8 +3,9 @@ import requests
 import pytest
 import json
 import bcrypt
+import base64
 
-url_server = 'http://127.0.0.1:5000'
+url_server = 'http://127.0.0.1:5002'
 
 def test_add_user():
     user_input_credentials = {'username': 'coolguy', 'password': "asdf"}
@@ -47,3 +48,27 @@ def test_wrong_username():
     assert 'User doesn\'t exist' in resp.json()['message']
     assert resp.status_code == 400
 """
+
+
+def test_lyrics_wordcloud():
+    song_lyrics = { "lyrics": [
+        "Lyrics of song 1",
+        "Lyrics of song 2",
+        "Lyrics of song 3"
+    ] }
+    resp = requests.post(f"{url_server}/lyrics_wordcloud", json = song_lyrics)
+    
+    assert resp.status_code == 200
+    assert 'Worcloud generated' in resp.json()['message']
+    
+    with open('wordcloud_test.png', 'wb') as test_fil:
+        test_fil.write(base64.b64decode(resp.json()['wordcloud_image_as_bytes']))
+    
+
+def test_search_lyrics():
+    song = {"search_song": "Ahe's My Kind Of Girl"}
+    resp = requests.post(f"{url_server}/search_lyrics", json = song)
+    
+    assert resp.status_code == 200
+    assert 'Song is found' in resp.json()['message']
+
