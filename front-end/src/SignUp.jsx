@@ -26,35 +26,21 @@ const themeLight = createTheme({
   }
 });
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-export default function SignIn() {
+export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      
-    fetch({server.url + "/authenticate"}, {
-        method: 'POST',
-        //TODO verify that data is sent across different origins
-        mode: 'cors',
-        body: data}).then(
+    const data = new FormData(event.currentTarget);
+      fetch({server.url + "/add_user"}, {
+          method: 'POST',
+          mode: 'cors',
+          body: data
+      }).then(
           response => {
               if (response.ok){
-                  // TODO how to keep users authenticated?
+                  // TODO confirm that add user adds the user?
               }
           }
-        );
+      );
   };
 
   return (
@@ -97,30 +83,15 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
+              // TODO have submit button send user back to login page?
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
             >
-              Sign In
+              Sign Up
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
