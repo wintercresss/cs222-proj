@@ -16,5 +16,5 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
         - Backend: completed the wordcloud generation API and search lyrics API 
         - Frontend: 
      Current Week Objectives:
-        - Backend: Develop song recommendations fucntion and deelop helper functions for that as well
+        - Backend: Develop song recommendations fucntion and develop helper functions for that functionality 
         - Frontend:  
