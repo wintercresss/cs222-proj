@@ -108,7 +108,22 @@ def search_lyrics():
     
     return jsonify({'message': 'Song is found', 'lyrics': song_details['text']}), 200
 
+@app.route('/find_song', methods=['GET'])
+def find_song():
+    song_to_search = request.args.get('song', '') # defaults to empty string if 'song' is not provided
+    arr = (spotify_songs_data[spotify_songs_data['song'].str.contains(song_to_search, case=False)]['song'].tolist())
+    # finds all songs containing the input (search the song column), returns the song column, and converts it into a list. case=false is to ignore lower/uppercase
+    print(arr)
+    return jsonify(arr)
+
+@app.route('/find_artist', methods=['GET'])
+def find_artist():
+    artist_to_search = request.args.get('artist', '') # defaults to empty string if artist not provided
+    arr = (spotify_songs_data[spotify_songs_data['artist'].str.contains(artist_to_search, case=False)]['artist'].tolist())
+    artistset = list(set(arr)) # first turn our array into a set to remove duplicate artists, then convert back into a list so that it can be jsonified
+    print(artistset)
+    return jsonify(artistset)
+
 if __name__ == '__main__':
-    app.run(debug=True)
-    
+    app.run(debug=True) # on my computer, have to do flask run --port 8000, or else postman doesn't give a response
     
