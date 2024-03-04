@@ -12,3 +12,9 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
         - Frontend: create the wordcloud display page 
         
 ## Week 8:
+     Progress towards previous week objectives:
+        - Backend: completed the wordcloud generation API and search lyrics API 
+        - Frontend: 
+     Current Week Objectives:
+        - Backend: Develop song recommendations fucntion and deelop helper functions for that as well
+        - Frontend:  
