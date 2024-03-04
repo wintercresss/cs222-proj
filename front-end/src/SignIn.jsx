@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+server.url = ""http://127.0.0.1:5000"
+
 const themeLight = createTheme({
   palette: {
     background: {
@@ -45,6 +47,20 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+      fetch({server.url + "/authenticate"}, {
+          method: 'POST',
+          mode: 'cors',
+          body: {
+              data.get('email'),
+              data.get('password')
+          }
+      }).then(
+          response => {
+              if (response.ok){
+                  // TODO how to keep users authenticated?
+              }
+          }
+      )
   };
 
   return (
