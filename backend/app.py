@@ -12,8 +12,10 @@ matplotlib.use('Agg')
 import base64
 from io import BytesIO
 import pandas as pd
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Read the spotify songs data file 
 spotify_songs_data = pd.read_csv('Spotify_Million_Song_Dataset_exported.csv')
@@ -87,12 +89,12 @@ def lyrics_wordcloud():
         image_as_bytes.seek(0) # Read the bytes from the beginning
         plot.close()
 
-        return jsonify({'message': 'Worcloud generated', 
+        return jsonify({'message': 'Wordcloud generated', 
                         'wordcloud_image_as_bytes': base64.b64encode(image_as_bytes.read()).decode('utf-8')}), 200
 
     except Exception as exc:
         print(exc)
-        return jsonify({'message': 'Worcloud cannot be generated'}), 400
+        return jsonify({'message': 'Wordcloud cannot be generated'}), 400
  
 @app.route('/search_lyrics', methods =['POST'])
 def search_lyrics():
