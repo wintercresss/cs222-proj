@@ -144,10 +144,10 @@ def song_recommender():
         
         cosine_similarities_flattened[0] = -1 # Remove the target song cosine similarity 
         
-        rec_idx = cosine_similarities_flattened.argmax()
-        rec_song_info = spotify_songs_data.iloc[rec_idx]
+        top_10_indices = cosine_similarities_flattened.argsort()[-10:][::-1] # find the top 10 songs, ordered by best to worst match
+        rec_songs_info = spotify_songs_data.iloc[top_10_indices]
         # print("this is it:", rec_song_info['song'])
-        return jsonify({"message": "Recommended song found", "recommended_song":rec_song_info['song'] }), 200
+        return jsonify({"message": "Recommended songs found", "recommended_songs": rec_songs_info['song'].tolist()}), 200
     except Exception as e:
         print(e)
         return jsonify({"message": "Recommended song not found"}), 400
