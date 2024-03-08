@@ -59,7 +59,7 @@ def test_lyrics_wordcloud():
     resp = requests.post(f"{url_server}/lyrics_wordcloud", json = song_lyrics)
     
     assert resp.status_code == 200
-    assert 'Worcloud generated' in resp.json()['message']
+    assert 'Wordcloud generated' in resp.json()['message']
     
     with open('wordcloud_test.png', 'wb') as test_fil:
         test_fil.write(base64.b64decode(resp.json()['wordcloud_image_as_bytes']))
@@ -72,3 +72,37 @@ def test_search_lyrics():
     assert resp.status_code == 200
     assert 'Song is found' in resp.json()['message']
 
+def test_song_recommender():
+    song = {"search_song": "Ahe's My Kind Of Girl"}
+    resp = requests.post(f"{url_server}/search_lyrics", json = song)
+    
+    assert resp.status_code == 200
+    assert 'Song is found' in resp.json()['message']
+    
+    target_lyrics = resp.json()['lyrics']
+    target_data = {"lyrics_input_data": target_lyrics}
+    resp = requests.post(f"{url_server}/song_recommender", json = target_data)
+    
+    assert resp.status_code == 200
+    assert 'Recommended song found' in resp.json()['message']
+    
+
+def test_make_song():
+    songs = ["Ahe's My Kind Of Girl","Andante, Andante" , "As Good As New", "Bang", "Bang-A-Boomerang"]
+    all_lyrics = []
+    for i in range(5):
+        song = {"search_song": songs[i]}
+        resp = requests.post(f"{url_server}/search_lyrics", json = song)
+        
+        assert resp.status_code == 200
+        assert 'Song is found' in resp.json()['message']
+        
+        given_lyrics = resp.json()['lyrics']
+        all_lyrics.append(given_lyrics)
+    
+    input_songs_data = {"lyrics": all_lyrics}
+    resp = requests.post(f"{url_server}/make_song", json = input_songs_data)
+    
+    assert resp.status_code == 200
+    assert 'Song generation successfull' in resp.json()['message']
+    

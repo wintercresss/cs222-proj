@@ -1,6 +1,5 @@
 from flask import Flask, request, make_response, jsonify
 # from flask_sqlalchemy import SQLAlchemy
-import os
 import json
 import bcrypt
 from wordcloud import WordCloud
@@ -13,6 +12,10 @@ import base64
 from io import BytesIO
 import pandas as pd
 from flask_cors import CORS
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import markovify
 
 app = Flask(__name__)
 CORS(app)
@@ -106,7 +109,7 @@ def search_lyrics():
         return jsonify({'message': 'Song is not found'}), 400
     
     song_details = search_result.iloc[0] # Extract the row 1 details from the search result dataframe 
-    print(song_details['text'])
+    # print(song_details['text'])
     
     return jsonify({'message': 'Song is found', 'lyrics': song_details['text']}), 200
 
@@ -125,6 +128,57 @@ def find_artist():
     artistset = list(set(arr)) # first turn our array into a set to remove duplicate artists, then convert back into a list so that it can be jsonified
     print(artistset)
     return jsonify(artistset)
+
+
+@app.route('/song_recommender', methods =['POST'])
+def song_recommender():
+    try:
+        lyrics_input_data = request.get_json()
+        target_song_lyrics = lyrics_input_data.get('lyrics_input_data')
+        
+        tfidf_vectorizer_english = TfidfVectorizer(stop_words='english') # TDIDF calculator excluding the generic english words
+        all_songs = [target_song_lyrics] + list(spotify_songs_data['text']) # list of all the songs 
+        tfidf_matrix_english = tfidf_vectorizer_english.fit_transform(all_songs) # calculate the term frequency for all the words in these songs 
+        similarity_level = cosine_similarity(tfidf_matrix_english[0:1], tfidf_matrix_english[1:]) # calculate the cosine similarity between target song and other songs 
+        cosine_similarities_flattened = similarity_level.flatten()  # make sure the resulting array is 1-dimensional
+        
+        cosine_similarities_flattened[0] = -1 # Remove the target song cosine similarity 
+        
+        rec_idx = cosine_similarities_flattened.argmax()
+        rec_song_info = spotify_songs_data.iloc[rec_idx]
+        # print("this is it:", rec_song_info['song'])
+        return jsonify({"message": "Recommended song found", "recommended_song":rec_song_info['song'] }), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Recommended song not found"}), 400
+        
+@app.route('/make_song', methods =['POST'])
+def make_song():
+    try:
+        lyrics_data = request.get_json()
+        lyrics_list = lyrics_data.get('lyrics')
+        
+        all_lyrics_text = '\n'.join(lyrics_list)
+        markov_text_generation_model = markovify.NewlineText(all_lyrics_text, state_size= 2 ) # fit the songs' lyrics in the markov text generation model
+        
+        sentences_generated = []
+        for i in range(10):
+            sentence = markov_text_generation_model.make_sentence()
+            sentences_generated.append(sentence)
+        print(sentences_generated)
+        
+        sentences_generated_filtered = []
+        for i in range(10):
+            if sentences_generated[i] is not None:
+                sentences_generated_filtered.append(sentences_generated[i])
+               
+        generated_song = '\n'.join(sentences_generated_filtered)
+        # print("heyyy", generated_song)
+        return jsonify({"message": "Song generation successfull", "song": generated_song }), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Song generation unsuccessfull"}), 400
+
 
 if __name__ == '__main__':
     app.run(debug=True) # on my computer, have to do flask run --port 8000, or else postman doesn't give a response
