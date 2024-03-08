@@ -47,18 +47,24 @@ export default function SignIn() {
     fetch(authentication_url, {
       method: 'POST',
       mode: 'cors',
-      body: data
+      body: JSON.stringify({
+        username: data.get("email"),
+        password: data.get("password"),
+      })
     })
       .then((response) => {
         if (!response.ok) {
+          //TODO handle HTTP error
           throw new Error(`HTTP error! Status:  ${response.status}`);
+        } else{
+          if (response.status == 200){
+            //TODO User has signed in, redirect to profile page
+          } else if(response.status == 400){
+            //TODO Incorrect Password entered
+            alert("Incorrect Password");
+          }
         }
       })
-
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   return (
