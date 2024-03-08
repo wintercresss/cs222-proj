@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-server.url = ""http://127.0.0.1:5000"
+const add_user_url = 'http://127.0.0.1:5000/add_user'
 
 const themeLight = createTheme({
   palette: {
@@ -26,21 +26,45 @@ const themeLight = createTheme({
   }
 });
 
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        CS222 Group 16
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
 export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-      fetch({server.url + "/add_user"}, {
-          method: 'POST',
-          mode: 'cors',
-          body: data
-      }).then(
-          response => {
-              if (response.ok){
-                  // TODO confirm that add user adds the user?
-              }
+    
+    fetch(add_user_url, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        username: data.get("email"),
+        password: data.get("password"),
+      })
+    })
+      .then((response) => {
+        if (!response.ok) {
+          //TODO handle HTTP error
+          throw new Error(`HTTP error! Status:  ${response.status}`);
+        } else{
+          if (response.status == 200){
+            //TODO Account Creation Successful, redirect to Sign In
+          } else if(response.status == 400){
+            //TODO Username already exists
+            alert("Username already exists");
           }
-      );
+        }
+      })
   };
 
   return (
@@ -60,7 +84,7 @@ export default function SignUp() {
             sx={{ width: 56, height: 56 }} // Customize size as needed
           />
           <Typography component="h1" variant="h5">
-            Welcome to Sportify Assistance!
+            Sign Up
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -84,7 +108,6 @@ export default function SignUp() {
               autoComplete="current-password"
             />
             <Button
-              // TODO have submit button send user back to login page?
               type="submit"
               fullWidth
               variant="contained"
@@ -92,6 +115,8 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+            <Grid container>
+            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -99,4 +124,3 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
-
