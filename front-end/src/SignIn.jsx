@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-server.url = ""http://127.0.0.1:5000"
+const authentication_url = 'http://127.0.0.1:5000/authenticate'
 
 const themeLight = createTheme({
   palette: {
@@ -31,7 +31,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        CS222 Group 16
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -42,19 +42,29 @@ function Copyright(props) {
 export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      
-    fetch({server.url + "/authenticate"}, {
-        method: 'POST',
-        //TODO verify that data is sent across different origins
-        mode: 'cors',
-        body: data}).then(
-          response => {
-              if (response.ok){
-                  // TODO how to keep users authenticated?
-              }
+    const data = new FormData(event.currentTarget);
+    
+    fetch(authentication_url, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        username: data.get("email"),
+        password: data.get("password"),
+      })
+    })
+      .then((response) => {
+        if (!response.ok) {
+          //TODO handle HTTP error
+          throw new Error(`HTTP error! Status:  ${response.status}`);
+        } else{
+          if (response.status == 200){
+            //TODO User has signed in, redirect to profile page
+          } else if(response.status == 400){
+            //TODO Incorrect Password entered
+            alert("Incorrect Password");
           }
-        );
+        }
+      })
   };
 
   return (
@@ -74,7 +84,7 @@ export default function SignIn() {
             sx={{ width: 56, height: 56 }} // Customize size as needed
           />
           <Typography component="h1" variant="h5">
-            Welcome to Sportify Assistance!
+            Welcome to Spotify Assistance
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
