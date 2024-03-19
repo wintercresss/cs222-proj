@@ -1,42 +1,58 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.primary-nav {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  top: 0;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000; /* Black background */
+  padding: 0.5rem 1rem; /* Adjust the padding as needed */
+  color: white;
+  z-index: 1000;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.primary-nav a {
+  color: inherit; /* White text */
+  text-decoration: none; /* No underline */
+  margin: 0 0.5rem; /* Space between links */
 }
 
-.card {
-  padding: 2em;
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
 }
 
-.read-the-docs {
-  color: #888;
+.nav-right {
+  justify-content: flex-end;
+}
+
+.nav-link {
+  padding: 0.5rem;
+  border-radius: 4px; /* Optional: for rounded corners */
+}
+
+.nav-link:hover {
+  background-color: #1db954; /* Sportify green on hover */
+}
+
+/* Additional style for active link */
+.nav-link-active {
+  font-weight: bold;
+  color: #1db954; /* Sportify green for active link */
 }
