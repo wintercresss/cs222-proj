@@ -63,6 +63,8 @@ export default function SignIn() {
           if(response.status == 440){
             //TODO Incorrect Password entered
             alert("Incorrect Password");
+          } else if(response.status == 441){
+            alert("User doesn't exist")
           }
           //TODO handle HTTP error
           else throw new Error(`HTTP error! Status:  ${response.status}`);

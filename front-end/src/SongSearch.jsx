@@ -11,8 +11,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
+const search_by_title_api = 'http://127.0.0.1:5000/find_song'
+const search_by_artist_api = 'http://127.0.0.1:5000/find_artist'
 
 const themeLight = createTheme({
   palette: {
@@ -42,32 +45,95 @@ function Copyright(props) {
 const handleSubmitLyrics = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    //Convert data from FormData to JSON object
+    let jsonObject = {};
+    for (const [key, value]  of data.entries()) {
+      jsonObject[key] = value;
+    }
+    let json = JSON.stringify(jsonObject);
+    console.log(json)
     
     fetch(search_lyric_api, {
       method: 'POST',
       mode: 'cors',
-      body: JSON.stringify({
-        lyrics: data.get("lyrics")
-      })
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
     })
       .then((response) => {
         if (!response.ok) {
-          //TODO handle HTTP error
-          throw new Error(`HTTP error! Status:  ${response.status}`);
+          alert("Something went wrong. oops")
         } else{
-          if (response.status == 200){
-            //TODO User has signed in, redirect to profile page
-          } else if(response.status == 400){
-            //TODO Incorrect Password entered
-            alert("Incorrect Password");
-          }
+          return response.json()
         }
+      })
+      .then(function(data){
+        console.log(data);
       })
   };
 
-const handleSubmit = (event) => {
+  const handleSubmitTitle = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    //Convert data from FormData to JSON object
+    let jsonObject = {};
+    for (const [key, value]  of data.entries()) {
+      jsonObject[key] = value;
+    }
+    let json = JSON.stringify(jsonObject);
+    console.log(json)
+    
+    fetch(search_by_title_api, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
+    })
+      .then((response) => {
+        if (!response.ok) {
+          alert("Something went wrong. oops")
+        } else{
+          return response.json()
+        }
+      })
+      .then(function(data){
+        console.log(data);
+      })
+  };
 
-}
+  const handleSubmitArtist = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    //Convert data from FormData to JSON object
+    let jsonObject = {};
+    for (const [key, value]  of data.entries()) {
+      jsonObject[key] = value;
+    }
+    let json = JSON.stringify(jsonObject);
+    console.log(json)
+    
+    fetch(search_by_artist_api, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
+    })
+      .then((response) => {
+        if (!response.ok) {
+          alert("Something went wrong. oops")
+        } else{
+          return response.json()
+        }
+      })
+      .then(function(data){
+        console.log(data);
+      })
+  };
 
 export default function SongSearch() {
   return (
@@ -95,9 +161,9 @@ export default function SongSearch() {
             <TextField
               margin="normal"
               fullWidth
-              id="search_lyrics"
+              id="search_song"
               label="Search by Lyrics"
-              name="lyrics"
+              name="search_song"
               autoComplete="la la la la la"
               autoFocus
             />
@@ -113,13 +179,13 @@ export default function SongSearch() {
             </Grid>
           </Box>
 
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmitTitle} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               fullWidth
               id="search_title"
               label="Search by Title"
-              name="title"
+              name="song_to_search"
               autoComplete="Never gonna give you up"
               autoFocus
             />
@@ -135,13 +201,13 @@ export default function SongSearch() {
             </Grid>
           </Box>
           
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               fullWidth
               id="search_artist"
               label="Search by Artist"
-              name="artist"
+              name="artist_to_search"
               autoComplete="Rick Astley"
               autoFocus
             />

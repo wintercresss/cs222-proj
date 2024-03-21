@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const add_user_url = 'http://127.0.0.1:5000/authenticate'
+const add_user_url = 'http://127.0.0.1:5000/add_user'
 
 const themeLight = createTheme({
   palette: {
