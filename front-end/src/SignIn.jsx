@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const authentication_url = 'http://127.0.0.1:5000/authenticate'
 
@@ -40,6 +41,7 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -72,6 +74,7 @@ export default function SignIn() {
           if (response.status == 200){
             //TODO User has signed in, redirect to profile page
             alert("Authenticated")
+            navigate('/myprofile')
           }
         }
       })

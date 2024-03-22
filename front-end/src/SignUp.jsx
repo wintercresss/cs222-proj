@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const add_user_url = 'http://127.0.0.1:5000/add_user'
 
@@ -40,6 +41,7 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -70,6 +72,7 @@ export default function SignUp() {
           if (response.status == 200){
             //TODO Account Creation Successful, redirect to Sign In
             alert("Account Created Successfully, proceed to Sign In")
+            navigate('/signin')
           }
         }
       })
