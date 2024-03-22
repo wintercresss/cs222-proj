@@ -14,7 +14,7 @@ export const Navbar = () => {
     <nav className="primary-nav">
       <div className="nav-left">
         <NavLink to="/" style={navLinkStyles}>
-          Sportify Assistance
+          Spotify Assistance
         </NavLink>
       </div>
       <div className="nav-right">
