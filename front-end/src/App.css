@@ -48,11 +48,11 @@
 }
 
 .nav-link:hover {
-  background-color: #1db954; /* Sportify green on hover */
+  background-color: #1db954; /* Spotify green on hover */
 }
 
 /* Additional style for active link */
 .nav-link-active {
   font-weight: bold;
-  color: #1db954; /* Sportify green for active link */
+  color: #1db954; /* Spotify green for active link */
 }
