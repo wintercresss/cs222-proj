@@ -9,8 +9,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
+
 const find_song_api = 'http://127.0.0.1:5000/find_song'
 const find_artist_api = 'http://127.0.0.1:5000/find_artist'
 
@@ -138,9 +140,9 @@ export default function SongSearch() {
             <TextField
               margin="normal"
               fullWidth
-              id="search_lyrics"
+              id="search_song"
               label="Search by Lyrics"
-              name="lyrics"
+              name="search_song"
               autoComplete="la la la la la"
               autoFocus
             />
@@ -158,12 +160,13 @@ export default function SongSearch() {
           <p>{searchResult}</p>
 
           <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
+
             <TextField
               margin="normal"
               fullWidth
               id="search_title"
               label="Search by Title"
-              name="title"
+              name="song_to_search"
               autoComplete="Never gonna give you up"
               autoFocus
             />
@@ -186,7 +189,7 @@ export default function SongSearch() {
               fullWidth
               id="search_artist"
               label="Search by Artist"
-              name="artist"
+              name="artist_to_search"
               autoComplete="Rick Astley"
               autoFocus
             />

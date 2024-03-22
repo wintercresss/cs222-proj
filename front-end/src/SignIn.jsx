@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const authentication_url = 'http://127.0.0.1:5000/authenticate'
 
@@ -40,28 +41,40 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
+    //Convert data to JSON object
+    let jsonObject = {};
+    for (const [key, value]  of data.entries()) {
+      jsonObject[key] = value;
+    }
+    let json = JSON.stringify(jsonObject);
+
     fetch(authentication_url, {
       method: 'POST',
       mode: 'cors',
-      body: JSON.stringify({
-        username: data.get("email"),
-        password: data.get("password"),
-      })
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json  
     })
       .then((response) => {
         if (!response.ok) {
+          if(response.status == 440){
+            //TODO Incorrect Password entered
+            alert("Incorrect Password");
+          } else if(response.status == 441){
+            alert("User doesn't exist")
+          }
           //TODO handle HTTP error
-          throw new Error(`HTTP error! Status:  ${response.status}`);
+          else throw new Error(`HTTP error! Status:  ${response.status}`);
         } else{
           if (response.status == 200){
             //TODO User has signed in, redirect to profile page
-          } else if(response.status == 400){
-            //TODO Incorrect Password entered
-            alert("Incorrect Password");
+            alert("Authenticated")
+            navigate('/myprofile')
           }
         }
       })
@@ -91,10 +104,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="username"
               label="Username"
-              name="email"
-              autoComplete="email"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -120,13 +133,8 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="http://localhost:5173/signup#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

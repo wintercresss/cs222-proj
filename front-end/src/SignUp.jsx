@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const add_user_url = 'http://127.0.0.1:5000/add_user'
 
@@ -40,28 +41,38 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
+    //Convert data from FormData to JSON object
+    let jsonObject = {};
+    for (const [key, value]  of data.entries()) {
+      jsonObject[key] = value;
+    }
+    let json = JSON.stringify(jsonObject);
+
     fetch(add_user_url, {
       method: 'POST',
       mode: 'cors',
-      body: JSON.stringify({
-        username: data.get("email"),
-        password: data.get("password"),
-      })
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
     })
       .then((response) => {
         if (!response.ok) {
           //TODO handle HTTP error
-          throw new Error(`HTTP error! Status:  ${response.status}`);
+          if(response.status == 400){
+            //TODO Username already exists
+            alert("Username already exists");
+          }
+          //throw new Error(`HTTP error! Message:  ${response.status}`);
         } else{
           if (response.status == 200){
             //TODO Account Creation Successful, redirect to Sign In
-          } else if(response.status == 400){
-            //TODO Username already exists
-            alert("Username already exists");
+            alert("Account Created Successfully, proceed to Sign In")
+            navigate('/signin')
           }
         }
       })
@@ -91,10 +102,10 @@ export default function SignUp() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="username"
               label="Email Address"
-              name="email"
-              autoComplete="email"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
