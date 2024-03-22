@@ -1,62 +1,84 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ReactWordcloud from 'react-wordcloud';
- 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+
 const themeLight = createTheme({
-    palette: {
-      background: {
-        default: "#ffffff"
-      },
-      text: {
-        primary: "#191414",
-        secondary: "#191414"
-      }
+  palette: {
+    background: {
+      default: "#ffffff"
+    },
+    text: {
+      primary: "#191414",
+      secondary: "#191414"
     }
+  }
 });
 
-const words = [
-    {
-      text: 'Song1',
-      song: 64,
-    },
-    {
-      text: 'Song2',
-      value: 11,
-    },
-    {
-      text: 'Song3',
-      value: 16,
-    },
-]
-
-const callbacks = {
-    getWordColor: word => word.value > 50 ? "#1DB954" : "darkgreen",
-    onWordClick: console.log,
-    onWordMouseOver: console.log,
-    getWordTooltip: word => `${word.value}`,
-}
-
-const options = {
-    rotations: 2,
-    rotationAngles: [0, 0],
-};
-
-const size = [500, 500];
+const lyricsWordcloudApi = 'http://127.0.0.1:5000/lyrics_wordcloud';
 
 export default function WordCloud() {
+  const [wordcloudImage, setWordcloudImage] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const lyrics = formData.get('lyrics'); // Assuming you have a TextField with name="lyrics"
+
+    try {
+      const response = await fetch(lyricsWordcloudApi, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ lyrics: lyrics.split('\n') }), // Assuming the lyrics are separated by new lines
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setWordcloudImage(`data:image/png;base64,${data.wordcloud_image_as_bytes}`); // Set the src for your image
+    } catch (error) {
+      console.error("Failed to fetch wordcloud data:", error);
+    }
+  };
 
   return (
     <ThemeProvider theme={themeLight}>
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-                <ReactWordcloud
-                    callbacks={callbacks}
-                    options={options}
-                    size={size}
-                    words={words} />
-        </Container>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
+          <TextField
+            margin="normal"
+            fullWidth
+            name="lyrics"
+            label="Enter Lyrics"
+            type="text"
+            id="lyrics"
+            multiline
+            rows={4}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+          >
+            Generate Wordcloud
+          </Button>
+        </Box>
+        {wordcloudImage && <img src={wordcloudImage} alt="Wordcloud" style={{ height: '100%', width: '100%' }} />}
+      </Container>
     </ThemeProvider>
   );
 }
