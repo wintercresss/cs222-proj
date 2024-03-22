@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,6 +11,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
+const find_song_api = 'http://127.0.0.1:5000/find_song'
+const find_artist_api = 'http://127.0.0.1:5000/find_artist'
 
 const themeLight = createTheme({
   palette: {
@@ -26,53 +26,96 @@ const themeLight = createTheme({
   }
 });
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        CS222 Group 16
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+export default function SongSearch() {
+  const [searchResult, setSearchResult] = useState()
 
-const handleSubmitLyrics = (event) => {
+  const handleSubmitLyrics = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    
-    fetch(search_lyric_api, {
-      method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify({
-        lyrics: data.get("lyrics")
+    const formData = new FormData(event.currentTarget);
+    const body = formData.get('lyrics');
+    try {
+      const response = await fetch(search_lyric_api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({search_song: body})
       })
-    })
-      .then((response) => {
-        if (!response.ok) {
-          //TODO handle HTTP error
-          throw new Error(`HTTP error! Status:  ${response.status}`);
-        } else{
-          if (response.status == 200){
-            //TODO User has signed in, redirect to profile page
-          } else if(response.status == 400){
-            //TODO Incorrect Password entered
-            alert("Incorrect Password");
-          }
-        }
-      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setSearchResult(data.lyrics)
+    } catch (error) {
+      console.error("Failed to search lyrics")
+    }
   };
 
-const handleSubmit = (event) => {
+  const [songResult, setSongResult] = useState()
 
-}
+  const handleSubmitSong = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const body = formData.get('title');
+    try {
+      const url = new URL(find_song_api);
+      url.searchParams.append('song', body);
 
-export default function SongSearch() {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        }
+      })
+
+      if (!response.ok) {
+        console.log(response.status)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const songString = data.join(', ');
+      setSongResult(songString)
+    } catch (error) {
+      console.error("Failed to search song")
+    }
+  };
+
+  const [artistResult, setArtistResult] = useState()
+
+  const handleSubmitArtist = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const body = formData.get('artist');
+    try {
+      const url = new URL(find_artist_api);
+      url.searchParams.append('artist', body);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        }
+      })
+
+      if (!response.ok) {
+        console.log(response.status)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const artistsString = data.join(', ');
+      setArtistResult(artistsString)
+    } catch (error) {
+      console.error("Failed to search artist")
+    }
+  };
+
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" >
         <CssBaseline />
         <Box
           sx={{
@@ -112,8 +155,9 @@ export default function SongSearch() {
             <Grid container>
             </Grid>
           </Box>
+          <p>{searchResult}</p>
 
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               fullWidth
@@ -134,8 +178,9 @@ export default function SongSearch() {
             <Grid container>
             </Grid>
           </Box>
-          
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <p>{songResult}</p>
+
+          <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               fullWidth
@@ -153,9 +198,8 @@ export default function SongSearch() {
             >
               Search
             </Button>
-            <Grid container>
-            </Grid>
           </Box>
+          <p>{artistResult}</p>
         </Box>
       </Container>
     </ThemeProvider>
