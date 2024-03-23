@@ -89,18 +89,18 @@ def test_song_recommender():
 
 def test_make_song():
     songs = ["Ahe's My Kind Of Girl","Andante, Andante" , "As Good As New", "Bang", "Bang-A-Boomerang"]
-    all_lyrics = []
-    for i in range(5):
-        song = {"search_song": songs[i]}
-        resp = requests.post(f"{url_server}/search_lyrics", json = song)
+    # all_lyrics = []
+    # for i in range(5):
+    #     song = {"search_song": songs[i]}
+    #     resp = requests.post(f"{url_server}/search_lyrics", json = song)
         
-        assert resp.status_code == 200
-        assert 'Song is found' in resp.json()['message']
+    #     assert resp.status_code == 200
+    #     assert 'Song is found' in resp.json()['message']
         
-        given_lyrics = resp.json()['lyrics']
-        all_lyrics.append(given_lyrics)
+    #     given_lyrics = resp.json()['lyrics']
+    #     all_lyrics.append(given_lyrics)
     
-    input_songs_data = {"lyrics": all_lyrics}
+    input_songs_data = {"target_songs": songs}
     resp = requests.post(f"{url_server}/make_song", json = input_songs_data)
     
     assert resp.status_code == 200

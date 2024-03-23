@@ -147,7 +147,7 @@ def song_recommender():
         top_10_indices = cosine_similarities_flattened.argsort()[-10:][::-1] # find the top 10 songs, ordered by best to worst match
         rec_songs_info = spotify_songs_data.iloc[top_10_indices]
         # print("this is it:", rec_song_info['song'])
-        return jsonify({"message": "Recommended songs found", "recommended_songs": rec_songs_info['song'].tolist()}), 200
+        return jsonify({"message": "Recommended song found", "recommended_songs": rec_songs_info['song'].tolist()}), 200
     except Exception as e:
         print(e)
         return jsonify({"message": "Recommended song not found"}), 400
@@ -156,7 +156,14 @@ def song_recommender():
 def make_song():
     try:
         lyrics_data = request.get_json()
-        lyrics_list = lyrics_data.get('lyrics')
+    
+        songs = lyrics_data.get('target_songs')
+        response_rows_true = spotify_songs_data['song'].str.contains('|'.join(songs), case=False)
+        search_result = spotify_songs_data[response_rows_true]
+        lyrics_list = []
+        for i in range(len(search_result)):
+            ith_song_details = search_result.iloc[i]
+            lyrics_list.append(ith_song_details['text'])
         
         all_lyrics_text = '\n'.join(lyrics_list)
         markov_text_generation_model = markovify.NewlineText(all_lyrics_text, state_size= 2 ) # fit the songs' lyrics in the markov text generation model
@@ -173,6 +180,7 @@ def make_song():
                 sentences_generated_filtered.append(sentences_generated[i])
                
         generated_song = '\n'.join(sentences_generated_filtered)
+        print(generated_song)
         # print("heyyy", generated_song)
         return jsonify({"message": "Song generation successfull", "song": generated_song }), 200
     except Exception as e:
