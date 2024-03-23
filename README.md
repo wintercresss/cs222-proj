@@ -3,18 +3,14 @@
 Project Plan:
 https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/edit?usp=sharing
 
-## Week 7:
-     Progress towards previous week objectives:
-        - Backend: add_user, authenticate APIs implemented and tested 
-        - Frontend: created the login webpage
-     Current Week Objectives:
-        - Backend: Develop the wordcloud feature and possibly look into adding song recommendations 
-        - Frontend: create the wordcloud display page 
-        
-## Week 8:
-     Progress towards previous week objectives:
-        - Backend: completed the wordcloud generation API and search lyrics API 
-        - Frontend: completed login webpage
-     Current Week Objectives:
-        - Backend: Develop song recommendations fucntion and develop helper functions for that functionality 
-        - Frontend: create profile page
+## How to run the application?
+### Run Backend 
+     - Navigate to the backend folder (cd backend/)
+     - Then run ``flask run -p 5002``
+### Run Frontend 
+     - Navigate to the frontend folder (cd frontend/)
+     - If yarn not installed:
+          - Run ``brew install yar`` or ``npm install -g yarn``
+     - Then, run ``yarn``
+     - Run ``yarn add react-router-dom``
+     - Run ``npm run-script dev``
