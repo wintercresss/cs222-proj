@@ -8,6 +8,7 @@ import MyProfile from './MyProfile'
 import SongSearch from './SongSearch'
 import { Navbar } from './NavBar.jsx'
 import SignIn from './SignIn.jsx'
+import SignUp from './SignUp.jsx'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path='/' element={<WordCloud />} />
           <Route path='/signin' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
           <Route path='/myprofile' element={<MyProfile />} />
           <Route path='/songsearch' element={<SongSearch />} />
         </Routes>
