@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LinearGradient } from 'react-text-gradients';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
 const find_song_api = 'http://127.0.0.1:5000/find_song'
@@ -47,9 +48,13 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      setSearchResult(data.lyrics)
+      console.log(data.lyrics)
+      
+      setSearchResult(data.lyrics.split('\n').map((line, index) => (
+        <div>{line}</div>
+      )))
     } catch (error) {
-      console.error("Failed to search lyrics")
+      setSearchResult("None")
     }
   };
 
@@ -76,8 +81,8 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const songString = data.join(', ');
-      setSongResult(songString)
+      const songString = data.slice(0,9).join(', ');
+      setSearchResult(songString)
     } catch (error) {
       console.error("Failed to search song")
     }
@@ -89,6 +94,7 @@ export default function SongSearch() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const body = formData.get('artist');
+    console.log(body)
     try {
       const url = new URL(find_artist_api);
       url.searchParams.append('artist', body);
@@ -106,8 +112,8 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const artistsString = data.join(', ');
-      setArtistResult(artistsString)
+      const artistsString = data.slice(0,9).join(', ');
+      setSearchResult(artistsString)
     } catch (error) {
       console.error("Failed to search artist")
     }
@@ -141,38 +147,12 @@ export default function SongSearch() {
                 }}
               >
                   <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                      margin="normal"
-                      fullWidth
-                      id="search_lyrics"
-                      label="Search by Lyrics"
-                      name="lyrics"
-                      autoComplete="la la la la la"
-                      multiline
-                      rows={2}
-                      InputLabelProps={{
-                        sx: { 
-                          color: 'white', // Label color
-                          '&.Mui-focused': { // Label color when the input is focused
-                            color: 'white',
-                          }
-                        }
-                      }}
-                      InputProps={{
-                        sx: {
-                          color: 'white', // Text color
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color for the outlined variant
-                          },
-                          '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color on hover for the outlined variant
-                          },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color when the input is focused for the outlined variant
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                    <Autocomplete
+                      disablePortal
+                      options={song_options}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
+                      name="lyrics" />}
                     />
                     <Button
                       type="submit"
@@ -186,38 +166,16 @@ export default function SongSearch() {
                     </Grid>
                   </Box>  
                   <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                      margin="normal"
-                      fullWidth
-                      id="search_title"
-                      label="Search by Title"
+                  <Autocomplete
+                      disablePortal
+                      id="title"
                       name="title"
-                      autoComplete="Never gonna give you up"
-                      multiline
-                      rows={2}
-                      InputLabelProps={{
-                        sx: { 
-                          color: 'white', // Label color
-                          '&.Mui-focused': { // Label color when the input is focused
-                            color: 'white',
-                          }
-                        }
-                      }}
-                      InputProps={{
-                        sx: {
-                          color: 'white', // Text color
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color for the outlined variant
-                          },
-                          '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color on hover for the outlined variant
-                          },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color when the input is focused for the outlined variant
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      options={song_options}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => 
+                        <TextField {...params} 
+                          label="Search for song names"
+                          name='title'/>}
                     />
                     <Button
                       type="submit"
@@ -231,38 +189,15 @@ export default function SongSearch() {
                     </Grid>
                   </Box>
                   <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                      margin="normal"
-                      fullWidth
-                      id="search_artist"
-                      label="Search by Artist"
+                    <Autocomplete
+                      disablePortal
+                      id="artist"
                       name="artist"
-                      autoComplete="Rick Astley"
-                      multiline
-                      rows={2}
-                      InputLabelProps={{
-                        sx: { 
-                          color: 'white', // Label color
-                          '&.Mui-focused': { // Label color when the input is focused
-                            color: 'white',
-                          }
-                        }
-                      }}
-                      InputProps={{
-                        sx: {
-                          color: 'white', // Text color
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color for the outlined variant
-                          },
-                          '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color on hover for the outlined variant
-                          },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white', // Border color when the input is focused for the outlined variant
-                          },
-                        },
-                      }}
-                      variant="outlined"
+                      options={artistOptions}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => <TextField {...params} 
+                        label="Search for Artists"
+                        name='artist' />}
                     />
                     <Button
                       type="submit"
@@ -283,15 +218,24 @@ export default function SongSearch() {
                   alignItems: 'center',
                 }}
               >
-                  <p>{searchResult}</p>
-                  <p>{songResult}</p>
-                  <p>{artistResult}</p>
+                  <div>
+                    {searchResult}
+                  </div>
               </Box>
             </Grid>
           </Grid>
-          </Box>
+        </Box>
       </Container>
     </ThemeProvider>
   );
 }
 
+const song_options = [
+  {label: 'Never gonna give you up'},
+  {label: 'Ahe\'s My Kind Of Girl'},
+  {label: 'Crazy World'}
+]
+
+const artistOptions = [
+  {label: "Rick Astley"}
+]

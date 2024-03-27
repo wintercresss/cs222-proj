@@ -51,7 +51,7 @@ def add_user():
     
     for user in users_login_data:
         if(user['username']== usrname):
-            return jsonify({'message': 'Username exists'}), 400
+            return jsonify({'message': 'Username exists'}), 409 # 409 error code for conflict
     
     hashed_password = hash_password(password)
     
@@ -72,9 +72,9 @@ def authenticate():
             if check_password(password, user['password'].encode('utf-8')):
                 return jsonify({'message': 'Successfully Authenticated'}), 200
             else:
-                return jsonify({'message': 'Wrong Password'}), 400
+                return jsonify({'message': 'Wrong Password'}), 401 # error code 401 unauthorized for wrong password
         
-    return jsonify({'message': 'User doesn\'t exist'}), 400
+    return jsonify({'message': 'User doesn\'t exist'}), 404 # error code 404 to signify not found
 
 @app.route('/lyrics_wordcloud', methods =['POST'])
 def lyrics_wordcloud():
@@ -106,7 +106,7 @@ def search_lyrics():
     search_result = spotify_songs_data[response_rows_true]
     
     if search_result.empty == True:
-        return jsonify({'message': 'Song is not found'}), 400
+        return jsonify({'message': 'Song is not found'}), 404 # 404 error code to signify not found
     
     song_details = search_result.iloc[0] # Extract the row 1 details from the search result dataframe 
     # print(song_details['text'])
@@ -150,7 +150,7 @@ def song_recommender():
         return jsonify({"message": "Recommended song found", "recommended_songs": rec_songs_info['song'].tolist()}), 200
     except Exception as e:
         print(e)
-        return jsonify({"message": "Recommended song not found"}), 400
+        return jsonify({"message": "Recommended song not found"}), 404 # 404 error message to signify not found
         
 @app.route('/make_song', methods =['POST'])
 def make_song():
