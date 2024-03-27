@@ -5,14 +5,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import { LinearGradient } from 'react-text-gradients';
 
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "#ffffff"
+      default: "transparent"
     },
     text: {
       primary: "#191414",
@@ -53,24 +52,25 @@ export default function WordCloud() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
         <CssBaseline />
+        <Container maxWidth="md">
         <Box
           sx={{
+            marginTop: '15rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar
-            src="/notes.png"
-            sx={{ width: 100, height: 100 }}
-          />
-          <Typography component="h1" variant="h5">
-            Welcome to WordCloud page!
-          </Typography>
+          <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+            <Typography component="h1" variant="h3" fontWeight={'bold'}>
+              Welcome to WordCloud page!
+            </Typography>
+          </LinearGradient>
           <p>You can generate Wordcloud</p>
         </Box>
+        <Container maxWidth="sm">
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -78,6 +78,7 @@ export default function WordCloud() {
           sx={{ mt: 1 }}
         >
           <TextField
+          
             margin="normal"
             fullWidth
             name="lyrics"
@@ -86,6 +87,29 @@ export default function WordCloud() {
             id="lyrics"
             multiline
             rows={4}
+            InputLabelProps={{
+              sx: { 
+                color: 'white', // Label color
+                '&.Mui-focused': { // Label color when the input is focused
+                  color: 'white',
+                }
+              }
+            }}
+            InputProps={{
+              sx: {
+                color: 'white', // Text color
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', // Border color for the outlined variant
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', // Border color on hover for the outlined variant
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', // Border color when the input is focused for the outlined variant
+                },
+              },
+            }}
+            variant="outlined"
           />
           <Button
             type="submit"
@@ -97,6 +121,8 @@ export default function WordCloud() {
           </Button>
         </Box>
         {wordcloudImage && <img src={wordcloudImage} alt="Wordcloud" style={{ height: '100%', width: '100%' }} />}
+        </Container>
+        </Container>
       </Container>
     </ThemeProvider>
   );

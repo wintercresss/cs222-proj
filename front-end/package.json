@@ -17,11 +17,13 @@
     "@mui/icons-material": "^5.15.11",
     "@mui/joy": "^5.0.0-beta.30",
     "@mui/material": "^5.15.12",
+    "@mui/styles": "^5.15.14",
     "@mui/system": "^5.0.0-rc.1",
     "chart.js": "^4.4.2",
     "chartjs-chart-wordcloud": "^4.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-text-gradients": "^1.0.2",
     "react-wordcloud": "^1.2.7",
     "wordcloud": "^1.2.2"
   },

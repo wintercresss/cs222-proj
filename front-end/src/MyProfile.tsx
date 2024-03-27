@@ -16,17 +16,16 @@ import { Container, CssBaseline } from '@mui/material';
 
 export default function MyProfile() {
   return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
           <CssBaseline/>
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 10,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               textAlign: 'center',
               justifyContent: 'center',
-              width: '100%',
             }}
           >
             <Stack

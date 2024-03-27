@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -18,7 +16,7 @@ const add_user_url = 'http://127.0.0.1:5000/add_user'
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "#ffffff"
+      default: "transparent"
     },
     text: {
       primary: "#191414",
@@ -80,7 +78,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{height: '100vh', maxHeight: 'none'}}>
         <CssBaseline />
         <Box
           sx={{
@@ -91,8 +89,8 @@ export default function SignUp() {
           }}
         >
           <Avatar
-            src="/Spotify_logo_without_text.svg.png"
-            sx={{ width: 56, height: 56 }} // Customize size as needed
+            src="/notes.png"
+            sx={{ width: 100, height: 100 }}
           />
           <Typography component="h1" variant="h5">
             Sign Up

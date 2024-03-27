@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,6 +8,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LinearGradient } from 'react-text-gradients';
 
 const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
 const find_song_api = 'http://127.0.0.1:5000/find_song'
@@ -17,7 +17,7 @@ const find_artist_api = 'http://127.0.0.1:5000/find_artist'
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "#ffffff"
+      default: "transparent"
     },
     text: {
       primary: "#191414",
@@ -115,23 +115,21 @@ export default function SongSearch() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false}>
+      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 10,
+            marginTop: '15rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar
-            src="/notes.png"
-            sx={{ width: 100, height: 100 }}
-          />
-          <Typography component="h1" variant="h5">
-            Welcome to the search page
-          </Typography>
+          <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+            <Typography component="h1" variant="h3" fontWeight={'bold'}>
+              Welcome to Search page!
+            </Typography>
+          </LinearGradient>
           <p>You can search by lyrics, artist, or title</p>
           <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
             <Grid item xs={12} md={6}>
@@ -152,6 +150,29 @@ export default function SongSearch() {
                       autoComplete="la la la la la"
                       multiline
                       rows={2}
+                      InputLabelProps={{
+                        sx: { 
+                          color: 'white', // Label color
+                          '&.Mui-focused': { // Label color when the input is focused
+                            color: 'white',
+                          }
+                        }
+                      }}
+                      InputProps={{
+                        sx: {
+                          color: 'white', // Text color
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color for the outlined variant
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color on hover for the outlined variant
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color when the input is focused for the outlined variant
+                          },
+                        },
+                      }}
+                      variant="outlined"
                     />
                     <Button
                       type="submit"
@@ -159,7 +180,7 @@ export default function SongSearch() {
                       variant="contained"
                       sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
                     >
-                      Search
+                      Search Lyrics
                     </Button>
                     <Grid container>
                     </Grid>
@@ -174,6 +195,29 @@ export default function SongSearch() {
                       autoComplete="Never gonna give you up"
                       multiline
                       rows={2}
+                      InputLabelProps={{
+                        sx: { 
+                          color: 'white', // Label color
+                          '&.Mui-focused': { // Label color when the input is focused
+                            color: 'white',
+                          }
+                        }
+                      }}
+                      InputProps={{
+                        sx: {
+                          color: 'white', // Text color
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color for the outlined variant
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color on hover for the outlined variant
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color when the input is focused for the outlined variant
+                          },
+                        },
+                      }}
+                      variant="outlined"
                     />
                     <Button
                       type="submit"
@@ -181,7 +225,7 @@ export default function SongSearch() {
                       variant="contained"
                       sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
                     >
-                      Search
+                      Search Title
                     </Button>
                     <Grid container>
                     </Grid>
@@ -196,6 +240,29 @@ export default function SongSearch() {
                       autoComplete="Rick Astley"
                       multiline
                       rows={2}
+                      InputLabelProps={{
+                        sx: { 
+                          color: 'white', // Label color
+                          '&.Mui-focused': { // Label color when the input is focused
+                            color: 'white',
+                          }
+                        }
+                      }}
+                      InputProps={{
+                        sx: {
+                          color: 'white', // Text color
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color for the outlined variant
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color on hover for the outlined variant
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color when the input is focused for the outlined variant
+                          },
+                        },
+                      }}
+                      variant="outlined"
                     />
                     <Button
                       type="submit"
@@ -203,7 +270,7 @@ export default function SongSearch() {
                       variant="contained"
                       sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
                     >
-                      Search
+                      Search Artist
                     </Button>
                   </Box>
               </Box>

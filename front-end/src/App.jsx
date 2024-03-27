@@ -15,16 +15,18 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <div className="content-wrapper">
-        <Routes>
-          <Route path='/' element={<WordCloud />} />
-          <Route path='/signin' element={<SignIn />} />
-          <Route path='/myprofile' element={<MyProfile />} />
-          <Route path='/songsearch' element={<SongSearch />} />
-          <Route path='/songgeneration' element={<SongGeneration />} />
-        </Routes>
-      </div>
+
+          <Navbar />
+          <div className="content-wrapper">
+            <Routes>
+              <Route path='/' element={<WordCloud />} />
+              <Route path='/signin' element={<SignIn />} />
+              <Route path='/myprofile' element={<MyProfile />} />
+              <Route path='/songsearch' element={<SongSearch />} />
+              <Route path='/songgeneration' element={<SongGeneration />} />
+            </Routes>
+          </div>
+
     </>
   )
 }

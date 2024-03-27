@@ -7,12 +7,12 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import { LinearGradient } from 'react-text-gradients';
 
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "#ffffff"
+      default: "transparent"
     },
     text: {
       primary: "#191414",
@@ -85,26 +85,27 @@ export default function SongGeneration() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
         <CssBaseline />
+        <Container maxWidth="md">
         <Box
           sx={{
+            marginTop: '15rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar
-            src="/notes.png"
-            sx={{ width: 100, height: 100 }}
-          />
-          <Typography component="h1" variant="h5">
-            Welcome to Song Recommendation page!
-          </Typography>
+          <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+            <Typography component="h1" variant="h3" fontWeight={'bold'}>
+              Welcome to Recommendation page!
+            </Typography>
+          </LinearGradient>
           <p>You can recommend and generate song</p>
         </Box>
+        <Container maxWidth="sm">
         <Box component="form" onSubmit={handleSubmitRecommender} noValidate sx={{ mt: 1 }}>
-          <Typography component="h1" variant="h6" align="center" gutterBottom>
+          <Typography component="h1" variant="h6" align="left" fontWeight={'bold'} color = "white" gutterBottom>
           Song Recommendation
           </Typography>
             <TextField
@@ -115,6 +116,29 @@ export default function SongGeneration() {
               name="recommender"
               autoComplete="la la la la la"
               autoFocus
+              InputLabelProps={{
+                sx: { 
+                  color: 'white', // Label color
+                  '&.Mui-focused': { // Label color when the input is focused
+                    color: 'white',
+                  }
+                }
+              }}
+              InputProps={{
+                sx: {
+                  color: 'white', // Text color
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white', // Border color for the outlined variant
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white', // Border color on hover for the outlined variant
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white', // Border color when the input is focused for the outlined variant
+                  },
+                },
+              }}
+              variant="outlined"
             />
             <Button
               type="submit"
@@ -130,7 +154,7 @@ export default function SongGeneration() {
           <p>{RecommenderResult}</p>
 
           <Box component="form" onSubmit={handleSubmitMakeSong} noValidate sx={{ mt: 1 }}>
-            <Typography component="h1" variant="h6" align="center" gutterBottom>
+            <Typography component="h1" variant="h6" align="left" fontWeight={'bold'} color = "white" gutterBottom>
             Song Generator
             </Typography>
             <TextField
@@ -141,6 +165,29 @@ export default function SongGeneration() {
               name="makesong"
               autoComplete="Never gonna give you up"
               autoFocus
+              InputLabelProps={{
+                sx: { 
+                  color: 'white', // Label color
+                  '&.Mui-focused': { // Label color when the input is focused
+                    color: 'white',
+                  }
+                }
+              }}
+              InputProps={{
+                sx: {
+                  color: 'white', // Text color
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white', // Border color for the outlined variant
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white', // Border color on hover for the outlined variant
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white', // Border color when the input is focused for the outlined variant
+                  },
+                },
+              }}
+              variant="outlined"
             />
             <Button
               type="submit"
@@ -154,6 +201,8 @@ export default function SongGeneration() {
             </Grid>
           </Box>
           <p>{MakeSongResult}</p>
+          </Container>
+          </Container>
       </Container>
     </ThemeProvider>
   );
