@@ -138,30 +138,7 @@ export default function SongSearch() {
           <Typography component="h1" variant="h5">
             Welcome to the search page
           </Typography>
-<<<<<<< Updated upstream
-          <p>You can search by lyrics, artist, or title</p>
-
-          <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="search_lyrics"
-              label="Search by Lyrics"
-              name="lyrics"
-              autoComplete="la la la la la"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Search
-            </Button>
-            <Grid container>
-            </Grid>
-=======
+          
           <p>You can search for lyrics, artist, or title</p>
           <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
             <Grid item xs={12} md={6}>
@@ -250,53 +227,6 @@ export default function SongSearch() {
               </Box>
             </Grid>
           </Grid>
->>>>>>> Stashed changes
-          </Box>
-          <p>{searchResult}</p>
-
-          <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="search_title"
-              label="Search by Title"
-              name="title"
-              autoComplete="Never gonna give you up"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Search
-            </Button>
-            <Grid container>
-            </Grid>
-          </Box>
-          <p>{songResult}</p>
-
-          <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="search_artist"
-              label="Search by Artist"
-              name="artist"
-              autoComplete="Rick Astley"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Search
-            </Button>
-          </Box>
-          <p>{artistResult}</p>
         </Box>
       </Container>
     </ThemeProvider>
