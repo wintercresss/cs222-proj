@@ -75,6 +75,7 @@ export default function SignIn() {
             //TODO User has signed in, redirect to profile page
             alert("Authenticated")
             navigate('/myprofile')
+            localStorage.setItem('username', JSON.stringify(JSON.parse(json).username));
           }
         }
       })
