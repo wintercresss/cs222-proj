@@ -8,7 +8,7 @@ import MyProfile from './MyProfile'
 import SongSearch from './SongSearch'
 import { Navbar } from './NavBar.jsx'
 import SignIn from './SignIn.jsx'
-
+import SongGeneration from './SongGeneration.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +22,7 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/myprofile' element={<MyProfile />} />
           <Route path='/songsearch' element={<SongSearch />} />
+          <Route path='/songgeneration' element={<SongGeneration />} />
         </Routes>
       </div>
     </>

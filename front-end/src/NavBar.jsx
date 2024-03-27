@@ -14,7 +14,10 @@ export const Navbar = () => {
     <nav className="primary-nav">
       <div className="nav-left">
         <NavLink to="/" style={navLinkStyles}>
-          Spotify Assistance
+          WordCloud
+        </NavLink>
+        <NavLink to="/songgeneration" style={navLinkStyles}>
+          Recommendation
         </NavLink>
       </div>
       <div className="nav-right">

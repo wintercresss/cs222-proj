@@ -10,22 +10,9 @@ import Typography from '@mui/joy/Typography';
 import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
 import CardOverflow from '@mui/joy/CardOverflow';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import { Container, CssBaseline } from '@mui/material';
-
-const themeLight = createTheme({
-  palette: {
-    background: {
-      default: "#ffffff"
-    },
-    text: {
-      primary: "#191414",
-      secondary: "#191414"
-    }
-  }
-});
 
 export default function MyProfile() {
   return (
@@ -63,17 +50,7 @@ export default function MyProfile() {
                   sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
                 >
                   <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                    {/* <Stack spacing={1}>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl
-                        sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
-                      >
-                        <Input size="sm" placeholder="First name" />
-                        <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
-                      </FormControl>
-                    </Stack> */}
                     <Stack spacing={1}>
-                      {/* <FormLabel>Log In Info</FormLabel> */}
                       <FormControl
                         sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                       >
@@ -82,19 +59,6 @@ export default function MyProfile() {
                         <Input size="sm" placeholder="New Password" sx={{ flexGrow: 1 }} />
                       </FormControl>
                     </Stack>
-                    {/* <Stack direction="row" spacing={2}>
-                      <FormControl sx={{ flexGrow: 1 }}>
-                        <FormLabel>Email</FormLabel>
-                        <Input
-                          size="sm"
-                          type="email"
-                          startDecorator={<EmailRoundedIcon />}
-                          placeholder="email"
-                          defaultValue="@gmail.com"
-                          sx={{ flexGrow: 1 }}
-                        />
-                      </FormControl>
-                    </Stack> */}
                   </Stack>
                 </Stack>
                 <Stack

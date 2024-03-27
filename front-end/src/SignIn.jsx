@@ -27,19 +27,6 @@ const themeLight = createTheme({
   }
 });
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        CS222 Group 16
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 export default function SignIn() {
   const navigate = useNavigate()
   const handleSubmit = (event) => {
@@ -82,7 +69,7 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ pt: 10 }}>
         <CssBaseline />
         <Box
           sx={{
@@ -93,8 +80,8 @@ export default function SignIn() {
           }}
         >
           <Avatar
-            src="/Spotify_logo_without_text.svg.png"
-            sx={{ width: 56, height: 56 }} // Customize size as needed
+            src="/notes.png"
+            sx={{ width: 100, height: 100 }}
           />
           <Typography component="h1" variant="h5">
             Welcome to Spotify Assistance

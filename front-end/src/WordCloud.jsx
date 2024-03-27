@@ -5,6 +5,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 
 const themeLight = createTheme({
   palette: {
@@ -53,6 +56,22 @@ export default function WordCloud() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar
+            src="/notes.png"
+            sx={{ width: 100, height: 100 }}
+          />
+          <Typography component="h1" variant="h5">
+            Welcome to WordCloud page!
+          </Typography>
+          <p>You can generate Wordcloud</p>
+        </Box>
+        <Box
           component="form"
           onSubmit={handleSubmit}
           noValidate
@@ -62,7 +81,7 @@ export default function WordCloud() {
             margin="normal"
             fullWidth
             name="lyrics"
-            label="Enter Lyrics"
+            label="Enter a song"
             type="text"
             id="lyrics"
             multiline

@@ -115,92 +115,114 @@ export default function SongSearch() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs" >
+      <Container component="main" maxWidth={false}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 10,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
           <Avatar
-            src="/Spotify_logo_without_text.svg.png"
-            sx={{ width: 56, height: 56 }} // Customize size as needed
+            src="/notes.png"
+            sx={{ width: 100, height: 100 }}
           />
           <Typography component="h1" variant="h5">
             Welcome to the search page
           </Typography>
           <p>You can search by lyrics, artist, or title</p>
-
-          <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="search_lyrics"
-              label="Search by Lyrics"
-              name="lyrics"
-              autoComplete="la la la la la"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Search
-            </Button>
-            <Grid container>
+          <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                  <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="search_lyrics"
+                      label="Search by Lyrics"
+                      name="lyrics"
+                      autoComplete="la la la la la"
+                      multiline
+                      rows={2}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Search
+                    </Button>
+                    <Grid container>
+                    </Grid>
+                  </Box>  
+                  <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="search_title"
+                      label="Search by Title"
+                      name="title"
+                      autoComplete="Never gonna give you up"
+                      multiline
+                      rows={2}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Search
+                    </Button>
+                    <Grid container>
+                    </Grid>
+                  </Box>
+                  <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="search_artist"
+                      label="Search by Artist"
+                      name="artist"
+                      autoComplete="Rick Astley"
+                      multiline
+                      rows={2}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Search
+                    </Button>
+                  </Box>
+              </Box>
             </Grid>
-          </Box>
-          <p>{searchResult}</p>
-
-          <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="search_title"
-              label="Search by Title"
-              name="title"
-              autoComplete="Never gonna give you up"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Search
-            </Button>
-            <Grid container>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                  <p>{searchResult}</p>
+                  <p>{songResult}</p>
+                  <p>{artistResult}</p>
+              </Box>
             </Grid>
+          </Grid>
           </Box>
-          <p>{songResult}</p>
-
-          <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="search_artist"
-              label="Search by Artist"
-              name="artist"
-              autoComplete="Rick Astley"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Search
-            </Button>
-          </Box>
-          <p>{artistResult}</p>
-        </Box>
       </Container>
     </ThemeProvider>
   );
