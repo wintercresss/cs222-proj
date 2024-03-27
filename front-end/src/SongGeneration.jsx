@@ -38,7 +38,8 @@ export default function SongGeneration() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({lyrics_input_data: body})
+        body: JSON.stringify({lyrics_input_data: body}),
+        mode: 'cors'
       })
 
       if (!response.ok) {
@@ -46,7 +47,8 @@ export default function SongGeneration() {
       }
 
       const data = await response.json();
-      setRecommenderResult(data.lyrics)
+      console.log(data.recommended_songs)
+      setRecommenderResult(data.recommended_songs)
     } catch (error) {
       console.error("Failed to search recommended song")
     }
@@ -64,7 +66,8 @@ export default function SongGeneration() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({lyrics_data: body})
+        body: JSON.stringify({lyrics_data: body}),
+        mode: 'cors'
       })
 
       if (!response.ok) {
