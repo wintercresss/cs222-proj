@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
 const find_song_api = 'http://127.0.0.1:5000/find_song'
@@ -47,9 +48,13 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      setSearchResult(data.lyrics)
+      console.log(data.lyrics)
+      
+      setSearchResult(data.lyrics.split('\n').map((line, index) => (
+        <div>{line}</div>
+      )))
     } catch (error) {
-      console.error("Failed to search lyrics")
+      setSearchResult("None")
     }
   };
 
@@ -76,8 +81,8 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const songString = data.join(', ');
-      setSongResult(songString)
+      const songString = data.slice(0,9).join(', ');
+      setSearchResult(songString)
     } catch (error) {
       console.error("Failed to search song")
     }
@@ -89,6 +94,7 @@ export default function SongSearch() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const body = formData.get('artist');
+    console.log(body)
     try {
       const url = new URL(find_artist_api);
       url.searchParams.append('artist', body);
@@ -106,8 +112,8 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const artistsString = data.join(', ');
-      setArtistResult(artistsString)
+      const artistsString = data.slice(0,9).join(', ');
+      setSearchResult(artistsString)
     } catch (error) {
       console.error("Failed to search artist")
     }
@@ -132,6 +138,7 @@ export default function SongSearch() {
           <Typography component="h1" variant="h5">
             Welcome to the search page
           </Typography>
+<<<<<<< Updated upstream
           <p>You can search by lyrics, artist, or title</p>
 
           <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
@@ -154,6 +161,96 @@ export default function SongSearch() {
             </Button>
             <Grid container>
             </Grid>
+=======
+          <p>You can search for lyrics, artist, or title</p>
+          <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                  <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
+                    <Autocomplete
+                      disablePortal
+                      options={song_options}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
+                      name="lyrics" />}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Search
+                    </Button>
+                    <Grid container>
+                    </Grid>
+                  </Box>  
+                  <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
+                  <Autocomplete
+                      disablePortal
+                      id="title"
+                      name="title"
+                      options={song_options}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => 
+                        <TextField {...params} 
+                          label="Search for song names"
+                          name='title'/>}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Search
+                    </Button>
+                    <Grid container>
+                    </Grid>
+                  </Box>
+                  <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
+                    <Autocomplete
+                      disablePortal
+                      id="artist"
+                      name="artist"
+                      options={artistOptions}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => <TextField {...params} 
+                        label="Search for Artists"
+                        name='artist' />}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Search
+                    </Button>
+                  </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                  <div>
+                    {searchResult}
+                  </div>
+              </Box>
+            </Grid>
+          </Grid>
+>>>>>>> Stashed changes
           </Box>
           <p>{searchResult}</p>
 
@@ -206,3 +303,12 @@ export default function SongSearch() {
   );
 }
 
+const song_options = [
+  {label: 'Never gonna give you up'},
+  {label: 'Ahe\'s My Kind Of Girl'},
+  {label: 'Crazy World'}
+]
+
+const artistOptions = [
+  {label: "Rick Astley"}
+]
