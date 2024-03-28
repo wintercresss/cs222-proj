@@ -106,3 +106,7 @@ def test_make_song():
     assert resp.status_code == 200
     assert 'Song generation successfull' in resp.json()['message']
     
+def test_get_all_songs():
+    resp = requests.get(f"{url_server}/get_all_songs")
+    assert resp.status_code == 200
+    assert 'Songs extracted from database' in resp.json()['message']
