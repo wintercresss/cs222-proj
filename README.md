@@ -11,7 +11,7 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
 ### Run Frontend 
      - Navigate to the frontend folder (cd frontend/)
      - If yarn not installed:
-          - Run: brew install yar or npm install -g yarn
+          - Run: brew install yarn or npm install -g yarn
      - Then, run: yarn
      - Run: yarn add react-router-dom
      - Run: npm run-script dev
