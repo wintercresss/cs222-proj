@@ -60,6 +60,15 @@ def add_user():
         json.dump(users_login_data,fil)
     return jsonify({'message': 'User added sucessfully'}), 200
     
+@app.route('/get_all_songs', methods=['GET'])
+def get_all_songs():
+    try: 
+        all_songs = spotify_songs_data['song'].tolist()
+        return jsonify({'message': 'Songs extracted from database', 'all_songs': all_songs}), 200
+    except Exception as e:
+        print("helooooooo\n",e,'\n')
+        return jsonify({'message': 'Songs not extracted from database'}), 404
+
 
 @app.route('/authenticate', methods =['POST'])
 def authenticate():
