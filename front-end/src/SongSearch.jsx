@@ -11,9 +11,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const search_lyric_api = 'http://127.0.0.1:5000/search_lyrics'
-const find_song_api = 'http://127.0.0.1:5000/find_song'
-const find_artist_api = 'http://127.0.0.1:5000/find_artist'
+const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics'
+const find_song_api = 'http://127.0.0.1:5002/find_song'
+const find_artist_api = 'http://127.0.0.1:5002/find_artist'
 
 const themeLight = createTheme({
   palette: {
