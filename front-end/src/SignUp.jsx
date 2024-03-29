@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-const add_user_url = 'http://127.0.0.1:5000/add_user'
+const add_user_url = 'http://127.0.0.1:5002/add_user'
 
 const themeLight = createTheme({
   palette: {

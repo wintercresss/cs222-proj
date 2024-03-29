@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { LinearGradient } from 'react-text-gradients';
 
-const authentication_url = 'http://127.0.0.1:5000/authenticate'
+const authentication_url = 'http://127.0.0.1:5002/authenticate'
 
 const themeLight = createTheme({
   palette: {

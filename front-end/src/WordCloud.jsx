@@ -20,11 +20,11 @@ const themeLight = createTheme({
   }
 });
 
-const lyricsWordcloudApi = 'http://127.0.0.1:5000/lyrics_wordcloud';
+const lyricsWordcloudApi = 'http://127.0.0.1:5002/lyrics_wordcloud';
 
 export default function WordCloud() {
   const [wordcloudImage, setWordcloudImage] = useState('');
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
