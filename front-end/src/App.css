@@ -1,6 +1,8 @@
 #root {
   max-width: 100%;
+  width: 100%;
   text-align: center;
+  background-color: rgb(0, 0, 0);
 }
 
 .content-wrapper {
@@ -10,6 +12,11 @@
   align-items: center;
   text-align: center;
   padding: 2rem;
+  height: 100%;
+}
+
+p {
+  color: rgb(220, 122, 255);
 }
 
 .primary-nav {
@@ -20,9 +27,9 @@
   top: 0;
   justify-content: space-between;
   align-items: center;
-  background-color: #000; /* Black background */
+  background-color: transparent;
   padding: 0.5rem 1rem; /* Adjust the padding as needed */
-  color: white;
+  color: transparent;
   z-index: 1000;
 }
 
@@ -48,11 +55,11 @@
 }
 
 .nav-link:hover {
-  background-color: #1db954; /* Spotify green on hover */
+  background-color: #000000; /* Spotify green on hover */
 }
 
 /* Additional style for active link */
 .nav-link-active {
   font-weight: bold;
-  color: #1db954; /* Spotify green for active link */
+  color: #000000; /* Spotify green for active link */
 }
