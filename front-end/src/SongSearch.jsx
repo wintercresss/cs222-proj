@@ -174,7 +174,31 @@ export default function SongSearch() {
                       filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
-                      name="lyrics" />}
+                      name="lyrics" 
+                      InputLabelProps={{
+                        sx: { 
+                          color: 'white', // Label color
+                          '&.Mui-focused': { // Label color when the input is focused
+                            color: 'white',
+                          }
+                        }
+                      }}
+                      InputProps={{
+                        sx: {
+                          color: 'white', // Text color
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color for the outlined variant
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color on hover for the outlined variant
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white', // Border color when the input is focused for the outlined variant
+                          },
+                        },
+                      }}
+                      variant="outlined"
+                      />}
                     />
                     <Button
                       type="submit"
@@ -198,7 +222,31 @@ export default function SongSearch() {
                       renderInput={(params) => 
                         <TextField {...params} 
                           label="Search for song names"
-                          name='title'/>}
+                          name='title'
+                          InputLabelProps={{
+                            sx: { 
+                              color: 'white', // Label color
+                              '&.Mui-focused': { // Label color when the input is focused
+                                color: 'white',
+                              }
+                            }
+                          }}
+                          InputProps={{
+                            sx: {
+                              color: 'white', // Text color
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white', // Border color for the outlined variant
+                              },
+                              '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white', // Border color on hover for the outlined variant
+                              },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white', // Border color when the input is focused for the outlined variant
+                              },
+                            },
+                          }}
+                          variant="outlined"
+                          />}
                     />
                     <Button
                       type="submit"
@@ -220,7 +268,30 @@ export default function SongSearch() {
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} 
                         label="Search for Artists"
-                        name='artist' />}
+                        name='artist'
+                        InputLabelProps={{
+                          sx: { 
+                            color: 'white', // Label color
+                            '&.Mui-focused': { // Label color when the input is focused
+                              color: 'white',
+                            }
+                          }
+                        }}
+                        InputProps={{
+                          sx: {
+                            color: 'white', // Text color
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'white', // Border color for the outlined variant
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'white', // Border color on hover for the outlined variant
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'white', // Border color when the input is focused for the outlined variant
+                            },
+                          },
+                        }}
+                        variant="outlined" />}
                     />
                     <Button
                       type="submit"
@@ -241,7 +312,7 @@ export default function SongSearch() {
                   alignItems: 'center',
                 }}
               >
-                  <div>
+                  <div style={{ color: 'rgb(220, 122, 255)' }}>
                     {searchResult}
                   </div>
               </Box>

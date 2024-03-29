@@ -1,24 +1,27 @@
 import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Stack from '@mui/joy/Stack';
-import Typography from '@mui/joy/Typography';
-import Card from '@mui/joy/Card';
-import CardActions from '@mui/joy/CardActions';
-import CardOverflow from '@mui/joy/CardOverflow';
-
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import { Container, CssBaseline } from '@mui/material';
+import { LinearGradient } from 'react-text-gradients';
+import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 
 export default function MyProfile() {
   return (
         <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
           <CssBaseline/>
-          <big>Welcome {localStorage.getItem('username')} </big>
+            <Box
+            sx={{
+              marginTop: '15rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+            >
+            <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+              <Typography component="h1" variant="h3" fontWeight={'bold'}>
+                Welcome {localStorage.getItem('username')}!
+              </Typography>
+            </LinearGradient>
+            </Box>
         </Container>
   );
 }
