@@ -9,7 +9,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LinearGradient } from 'react-text-gradients';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+
+const filterOptions = createFilterOptions({
+  matchFrom: 'any',
+  limit: 25,
+});
+
 
 const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics'
 const find_song_api = 'http://127.0.0.1:5002/find_song'
@@ -165,6 +171,7 @@ export default function SongSearch() {
                     <Autocomplete
                       disablePortal
                       options={songOptions}
+                      filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
                       name="lyrics" />}
@@ -186,6 +193,7 @@ export default function SongSearch() {
                       id="title"
                       name="title"
                       options={songOptions}
+                      filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => 
                         <TextField {...params} 
