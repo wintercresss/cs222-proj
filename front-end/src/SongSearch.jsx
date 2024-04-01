@@ -130,7 +130,7 @@ export default function SongSearch() {
   }).then((response) => {
     return response.json();
   }).then((data) => {
-    console.log(data.all_songs)
+    setSongOptions(data.all_songs)
   })
   
 
