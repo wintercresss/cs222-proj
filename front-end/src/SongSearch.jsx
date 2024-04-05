@@ -9,11 +9,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LinearGradient } from 'react-text-gradients';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+
+const filterOptions = createFilterOptions({
+  matchFrom: 'any',
+  limit: 25,
+});
+
 
 const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics'
 const find_song_api = 'http://127.0.0.1:5002/find_song'
 const find_artist_api = 'http://127.0.0.1:5002/find_artist'
+const fetch_songs_api = 'http://127.0.0.1:5002/get_all_songs'
 
 const themeLight = createTheme({
   palette: {
@@ -119,6 +126,20 @@ export default function SongSearch() {
     }
   };
 
+  const [songOptions, setSongOptions] = useState([])
+  fetch(fetch_songs_api, {
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+    },
+    mode: "cors"
+  }).then((response) => {
+    return response.json();
+  }).then((data) => {
+    setSongOptions(data.all_songs)
+  })
+  
+
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
@@ -149,7 +170,8 @@ export default function SongSearch() {
                   <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
                     <Autocomplete
                       disablePortal
-                      options={song_options}
+                      options={songOptions}
+                      filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
                       name="lyrics" />}
@@ -158,7 +180,7 @@ export default function SongSearch() {
                       type="submit"
                       fullWidth
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'darkgreen' } }}
                     >
                       Search Lyrics
                     </Button>
@@ -170,7 +192,8 @@ export default function SongSearch() {
                       disablePortal
                       id="title"
                       name="title"
-                      options={song_options}
+                      options={songOptions}
+                      filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => 
                         <TextField {...params} 
@@ -230,11 +253,6 @@ export default function SongSearch() {
   );
 }
 
-const song_options = [
-  {label: 'Never gonna give you up'},
-  {label: 'Ahe\'s My Kind Of Girl'},
-  {label: 'Crazy World'}
-]
 
 const artistOptions = [
   {label: "Rick Astley"}
