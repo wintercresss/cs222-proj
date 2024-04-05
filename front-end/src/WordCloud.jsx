@@ -11,7 +11,7 @@ import { LinearGradient } from 'react-text-gradients';
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "transparent"
+      default: "#FFFF"
     },
     text: {
       primary: "#191414",
@@ -21,6 +21,7 @@ const themeLight = createTheme({
 });
 
 const lyricsWordcloudApi = 'http://127.0.0.1:5002/lyrics_wordcloud';
+const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics'
 
 export default function WordCloud() {
   const [wordcloudImage, setWordcloudImage] = useState('');
@@ -28,7 +29,29 @@ export default function WordCloud() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const lyrics = formData.get('song-name'); // Assuming you have a TextField with name="lyrics"
+    const body = formData.get('lyrics');
+    var lyrics = "Not Found";
+    try {
+      const response = await fetch(search_lyric_api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({search_song: body})
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.lyrics)
+      
+      lyrics = data.lyrics
+      
+    } catch (error) {
+      console.log("Search lyrics error")
+    }
 
     try {
       const response = await fetch(lyricsWordcloudApi, {
@@ -45,6 +68,7 @@ export default function WordCloud() {
 
       const data = await response.json();
       setWordcloudImage(`data:image/png;base64,${data.wordcloud_image_as_bytes}`); // Set the src for your image
+      console.log("Word cloud image update")
     } catch (error) {
       console.error("Failed to fetch wordcloud data:", error);
     }
@@ -53,7 +77,7 @@ export default function WordCloud() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
+      <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
         <Container maxWidth="md">
         <Box
@@ -82,10 +106,10 @@ export default function WordCloud() {
           
             margin="normal"
             fullWidth
-            name="song-name"
+            name="lyrics"
             label="Enter a song"
             type="text"
-            id="song-name"
+            id="lyrics"
             multiline
             rows={4}
           />
@@ -93,7 +117,7 @@ export default function WordCloud() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+            sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
           >
             Generate Wordcloud
           </Button>

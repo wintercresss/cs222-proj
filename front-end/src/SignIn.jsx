@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { LinearGradient } from 'react-text-gradients';
+import { useAuth } from './AuthContext.jsx';
 
 const authentication_url = 'http://127.0.0.1:5002/authenticate'
 
@@ -28,7 +29,9 @@ const themeLight = createTheme({
 });
 
 export default function SignIn() {
-  const navigate = useNavigate()
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,7 +52,7 @@ export default function SignIn() {
     })
       .then((response) => {
         if (!response.ok) {
-          if(response.status == 440){
+          if(response.status == 440 || response.status == 401){
             //TODO Incorrect Password entered
             alert("Incorrect Password");
           } else if(response.status == 441){
@@ -61,8 +64,8 @@ export default function SignIn() {
           if (response.status == 200){
             //TODO User has signed in, redirect to profile page
             alert("Authenticated")
-            navigate('/myprofile')
             localStorage.setItem('username', JSON.stringify(JSON.parse(json).username));
+            signIn(() => navigate('/myprofile'));
           }
         }
       })
@@ -116,7 +119,7 @@ export default function SignIn() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
               >
                 Sign In
               </Button>

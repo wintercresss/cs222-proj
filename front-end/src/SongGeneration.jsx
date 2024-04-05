@@ -12,7 +12,7 @@ import { LinearGradient } from 'react-text-gradients';
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "transparent"
+      default: "#FFFF"
     },
     text: {
       primary: "#191414",
@@ -85,7 +85,7 @@ export default function SongGeneration() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
+      <Container component="main" maxWidth={false}>
         <CssBaseline />
         <Container maxWidth="md">
         <Box
@@ -121,7 +121,7 @@ export default function SongGeneration() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
             >
               Recommend Song
             </Button>
@@ -147,7 +147,7 @@ export default function SongGeneration() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
             >
               Make Song
             </Button>
