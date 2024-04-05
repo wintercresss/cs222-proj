@@ -73,6 +73,7 @@ export default function WordCloud() {
       console.error("Failed to fetch wordcloud data:", error);
     }
     
+    
   };
 
   return (
@@ -106,10 +107,10 @@ export default function WordCloud() {
           
             margin="normal"
             fullWidth
-            name="lyrics"
+            name="song-name"
             label="Enter a song"
             type="text"
-            id="lyrics"
+            id="song-name"
             multiline
             rows={4}
           />

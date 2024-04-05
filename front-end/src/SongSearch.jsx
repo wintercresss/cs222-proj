@@ -175,6 +175,8 @@ export default function SongSearch() {
                       renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
                       name="lyrics" 
                       />}
+                      name="lyrics" 
+                      />}
                     />
                     <Button
                       type="submit"
@@ -200,6 +202,8 @@ export default function SongSearch() {
                           label="Search for song names"
                           name='title'
                           />}
+                          name='title'
+                          />}
                     />
                     <Button
                       type="submit"
@@ -221,6 +225,8 @@ export default function SongSearch() {
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} 
                         label="Search for Artists"
+                        name='artist'
+                      />}
                         name='artist'
                       />}
                     />
