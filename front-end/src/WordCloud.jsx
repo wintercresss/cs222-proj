@@ -28,7 +28,7 @@ export default function WordCloud() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const lyrics = formData.get('lyrics'); // Assuming you have a TextField with name="lyrics"
+    const lyrics = formData.get('song-name'); // Assuming you have a TextField with name="lyrics"
 
     try {
       const response = await fetch(lyricsWordcloudApi, {
@@ -48,6 +48,7 @@ export default function WordCloud() {
     } catch (error) {
       console.error("Failed to fetch wordcloud data:", error);
     }
+    
   };
 
   return (
@@ -81,35 +82,12 @@ export default function WordCloud() {
           
             margin="normal"
             fullWidth
-            name="lyrics"
+            name="song-name"
             label="Enter a song"
             type="text"
-            id="lyrics"
+            id="song-name"
             multiline
             rows={4}
-            InputLabelProps={{
-              sx: { 
-                color: 'white', // Label color
-                '&.Mui-focused': { // Label color when the input is focused
-                  color: 'white',
-                }
-              }
-            }}
-            InputProps={{
-              sx: {
-                color: 'white', // Text color
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color for the outlined variant
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color on hover for the outlined variant
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color when the input is focused for the outlined variant
-                },
-              },
-            }}
-            variant="outlined"
           />
           <Button
             type="submit"

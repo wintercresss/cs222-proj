@@ -21,8 +21,8 @@ const themeLight = createTheme({
   }
 });
 
-const song_recommender_api = 'http://127.0.0.1:5000/song_recommender';
-const make_song_api = 'http://127.0.0.1:5000/make_song';
+const song_recommender_api = 'http://127.0.0.1:5002/song_recommender';
+const make_song_api = 'http://127.0.0.1:5002/make_song';
 
 export default function SongGeneration() {
 
@@ -116,29 +116,6 @@ export default function SongGeneration() {
               name="recommender"
               autoComplete="la la la la la"
               autoFocus
-              InputLabelProps={{
-                sx: { 
-                  color: 'white', // Label color
-                  '&.Mui-focused': { // Label color when the input is focused
-                    color: 'white',
-                  }
-                }
-              }}
-              InputProps={{
-                sx: {
-                  color: 'white', // Text color
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color for the outlined variant
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color on hover for the outlined variant
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color when the input is focused for the outlined variant
-                  },
-                },
-              }}
-              variant="outlined"
             />
             <Button
               type="submit"
@@ -165,29 +142,6 @@ export default function SongGeneration() {
               name="makesong"
               autoComplete="Never gonna give you up"
               autoFocus
-              InputLabelProps={{
-                sx: { 
-                  color: 'white', // Label color
-                  '&.Mui-focused': { // Label color when the input is focused
-                    color: 'white',
-                  }
-                }
-              }}
-              InputProps={{
-                sx: {
-                  color: 'white', // Text color
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color for the outlined variant
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color on hover for the outlined variant
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color when the input is focused for the outlined variant
-                  },
-                },
-              }}
-              variant="outlined"
             />
             <Button
               type="submit"

@@ -7,7 +7,7 @@ export const Navbar = () => {
     return {
       fontWeight: isActive ? 'none' : 'normal',
       textDecoration: isActive ? 'bold' : 'normal',
-      color: isActive ? '#ff68f0' : 'white',
+      color: isActive ? '#ff68f0' : 'black',
     }
   }
 

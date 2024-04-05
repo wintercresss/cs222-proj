@@ -97,29 +97,6 @@ export default function SignIn() {
                 name="username"
                 autoComplete="username"
                 autoFocus
-                InputLabelProps={{
-                  sx: { 
-                    color: 'white', // Label color
-                    '&.Mui-focused': { // Label color when the input is focused
-                      color: 'white',
-                    }
-                  }
-                }}
-                InputProps={{
-                  sx: {
-                    color: 'white', // Text color
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white', // Border color for the outlined variant
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white', // Border color on hover for the outlined variant
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white', // Border color when the input is focused for the outlined variant
-                    },
-                  },
-                }}
-                variant="outlined"
               />
               <TextField
                 margin="normal"
@@ -130,36 +107,10 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                InputLabelProps={{
-                  sx: { 
-                    color: 'white', // Label color
-                    '&.Mui-focused': { // Label color when the input is focused
-                      color: 'white',
-                    }
-                  }
-                }}
-                InputProps={{
-                  sx: {
-                    color: 'white', // Text color
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white', // Border color for the outlined variant
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white', // Border color on hover for the outlined variant
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white', // Border color when the input is focused for the outlined variant
-                    },
-                  },
-                }}
-                variant="outlined"
               />
               <FormControlLabel
-                control={<Checkbox value="remember" sx={{ color: 'white', '&.Mui-checked': { color: 'white' } }} />}
+                control={<Checkbox value="remember" sx={{ color: '&.Mui-checked'}} />}
                 label="Remember me"
-                sx={{
-                  color: 'white',
-                }}
               />
               <Button
                 type="submit"
