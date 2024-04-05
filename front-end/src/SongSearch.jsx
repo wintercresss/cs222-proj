@@ -65,8 +65,6 @@ export default function SongSearch() {
     }
   };
 
-  const [songResult, setSongResult] = useState()
-
   const handleSubmitSong = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -94,8 +92,6 @@ export default function SongSearch() {
       console.error("Failed to search song")
     }
   };
-
-  const [artistResult, setArtistResult] = useState()
 
   const handleSubmitArtist = async (event) => {
     event.preventDefault();
@@ -175,8 +171,6 @@ export default function SongSearch() {
                       renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
                       name="lyrics" 
                       />}
-                      name="lyrics" 
-                      />}
                     />
                     <Button
                       type="submit"
@@ -202,8 +196,6 @@ export default function SongSearch() {
                           label="Search for song names"
                           name='title'
                           />}
-                          name='title'
-                          />}
                     />
                     <Button
                       type="submit"
@@ -225,8 +217,6 @@ export default function SongSearch() {
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} 
                         label="Search for Artists"
-                        name='artist'
-                      />}
                         name='artist'
                       />}
                     />

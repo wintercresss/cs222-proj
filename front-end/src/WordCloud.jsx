@@ -7,6 +7,12 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
+import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+
+const filterOptions = createFilterOptions({
+  matchFrom: 'any',
+  limit: 25,
+});
 
 const themeLight = createTheme({
   palette: {
@@ -21,7 +27,8 @@ const themeLight = createTheme({
 });
 
 const lyricsWordcloudApi = 'http://127.0.0.1:5002/lyrics_wordcloud';
-const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics'
+const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics';
+const fetch_songs_api = 'http://127.0.0.1:5002/get_all_songs';
 
 export default function WordCloud() {
   const [wordcloudImage, setWordcloudImage] = useState('');
@@ -76,6 +83,19 @@ export default function WordCloud() {
     
   };
 
+  const [songOptions, setSongOptions] = useState([])
+  fetch(fetch_songs_api, {
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+    },
+    mode: "cors"
+  }).then((response) => {
+    return response.json();
+  }).then((data) => {
+    setSongOptions(data.all_songs)
+  })
+
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
@@ -83,7 +103,7 @@ export default function WordCloud() {
         <Container maxWidth="md">
         <Box
           sx={{
-            marginTop: '15rem',
+            marginTop: '0rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -103,16 +123,13 @@ export default function WordCloud() {
           noValidate
           sx={{ mt: 1 }}
         >
-          <TextField
-          
-            margin="normal"
-            fullWidth
-            name="song-name"
-            label="Enter a song"
-            type="text"
-            id="song-name"
-            multiline
-            rows={4}
+          <Autocomplete
+                      disablePortal
+                      options={songOptions}
+                      filterOptions={filterOptions}
+                      renderInput={(params) => <TextField {...params} label="Enter a song"
+                      name="lyrics" 
+            />}
           />
           <Button
             type="submit"
