@@ -76,8 +76,8 @@ export default function SongGeneration() {
       }
 
       const data = await response.json();
-      console.log(data.song)
-      setMakeSongResult(data.song)
+      console.log(data.song);
+      setMakeSongResult(data.song);
     } catch (error) {
       console.error("Failed to generate song")
     }
@@ -137,7 +137,7 @@ export default function SongGeneration() {
             <TextField
               margin="normal"
               fullWidth
-              id="make_song"
+              id="makesong"
               label="Enter a song"
               name="makesong"
               autoComplete="Never gonna give you up"
