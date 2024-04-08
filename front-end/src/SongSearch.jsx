@@ -88,8 +88,8 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const songString = data.slice(0,9).join(', ');
-      setSearchResult(songString.split(', ').map((line, index) => (
+      const songString = data.slice(0,9).join('/n');
+      setSearchResult(songString.split('/n').map((line, index) => (
         <div>{line}</div>
       )))
     } catch (error) {
@@ -121,8 +121,8 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const artistsString = data.slice(0,9).join(', ');
-      setSearchResult(artistsString.split(', ').map((line, index) => (
+      const artistsString = data.slice(0,9).join('/n');
+      setSearchResult(artistsString.split('/n').map((line, index) => (
         <div>{line}</div>
       )))
     } catch (error) {
