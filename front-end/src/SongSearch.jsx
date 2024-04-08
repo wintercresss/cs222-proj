@@ -28,8 +28,8 @@ const themeLight = createTheme({
       default: "transparent"
     },
     text: {
-      primary: "#191414",
-      secondary: "#191414"
+      primary: "#00CCAA",
+      secondary: "0000FF"
     }
   }
 });
@@ -89,7 +89,9 @@ export default function SongSearch() {
 
       const data = await response.json();
       const songString = data.slice(0,9).join(', ');
-      setSearchResult(songString)
+      setSearchResult(songString.split(', ').map((line, index) => (
+        <div>{line}</div>
+      )))
     } catch (error) {
       console.error("Failed to search song")
     }
@@ -120,24 +122,29 @@ export default function SongSearch() {
 
       const data = await response.json();
       const artistsString = data.slice(0,9).join(', ');
-      setSearchResult(artistsString)
+      setSearchResult(artistsString.split(', ').map((line, index) => (
+        <div>{line}</div>
+      )))
     } catch (error) {
       console.error("Failed to search artist")
     }
   };
 
   const [songOptions, setSongOptions] = useState([])
-  fetch(fetch_songs_api, {
-    method: "GET",
-    headers: {
-      'Accept': 'application/json',
-    },
-    mode: "cors"
-  }).then((response) => {
-    return response.json();
-  }).then((data) => {
-    setSongOptions(data.all_songs)
-  })
+  if(songOptions.length == 0){
+    fetch(fetch_songs_api, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+      },
+      mode: "cors"
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      setSongOptions(data.all_songs)
+    })
+  }
+  
   
 
   return (
@@ -180,7 +187,7 @@ export default function SongSearch() {
                       type="submit"
                       fullWidth
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'darkgreen' } }}
+                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
                     >
                       Search Lyrics
                     </Button>
@@ -193,6 +200,7 @@ export default function SongSearch() {
                       id="title"
                       name="title"
                       options={songOptions}
+                      freeSolo
                       filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => 
@@ -212,16 +220,15 @@ export default function SongSearch() {
                     </Grid>
                   </Box>
                   <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-                    <Autocomplete
-                      disablePortal
-                      id="artist"
-                      name="artist"
-                      options={artistOptions}
-                      sx={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} 
-                        label="Search for Artists"
-                        name='artist' />}
-                    />
+                  <TextField
+              margin="normal"
+              fullWidth
+              id="search_artist"
+              label="Search by Artist"
+              name="artist"
+              autoComplete="Rick Astley"
+              autoFocus
+            />
                     <Button
                       type="submit"
                       fullWidth
