@@ -220,15 +220,19 @@ export default function SongSearch() {
                     </Grid>
                   </Box>
                   <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-                  <TextField
-              margin="normal"
-              fullWidth
-              id="search_artist"
-              label="Search by Artist"
-              name="artist"
-              autoComplete="Rick Astley"
-              autoFocus
-            />
+                  <Autocomplete
+                      disablePortal
+                      id="artist"
+                      name="artist"
+                      options={artistOptions}
+                      freeSolo
+                      filterOptions={filterOptions}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => 
+                        <TextField {...params} 
+                          label="Search for artists"
+                          name='artist'/>}
+                    />
                     <Button
                       type="submit"
                       fullWidth
@@ -262,5 +266,4 @@ export default function SongSearch() {
 
 
 const artistOptions = [
-  {label: "Rick Astley"}
 ]
