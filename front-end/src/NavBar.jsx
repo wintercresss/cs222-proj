@@ -7,7 +7,7 @@ export const Navbar = () => {
     return {
       fontWeight: isActive ? 'none' : 'normal',
       textDecoration: isActive ? 'bold' : 'normal',
-      color: isActive ? '#ff68f0' : 'white',
+      color: isActive ? '#ff68f0' : 'black',
     }
   }
 
@@ -18,7 +18,7 @@ export const Navbar = () => {
           src="/notes.png"
           sx={{ width: 75, height: 75 }}
         />
-        <NavLink to="/" style={navLinkStyles}>
+        <NavLink to="/wordcloud" style={navLinkStyles}>
           WordCloud
         </NavLink>
         <NavLink to="/songgeneration" style={navLinkStyles}>
@@ -31,9 +31,6 @@ export const Navbar = () => {
         </NavLink>
         <NavLink to="/myprofile" style={navLinkStyles}>
           Profile
-        </NavLink>
-        <NavLink to="/signin" style={navLinkStyles}>
-          Sign-In
         </NavLink>
       </div>
     </nav>

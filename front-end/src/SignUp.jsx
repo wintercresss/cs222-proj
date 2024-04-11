@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,6 +8,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LinearGradient } from 'react-text-gradients';
 import { useNavigate } from 'react-router-dom';
 
 const add_user_url = 'http://127.0.0.1:5002/add_user'
@@ -25,21 +25,17 @@ const themeLight = createTheme({
   }
 });
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        CS222 Group 16
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 export default function SignUp() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [signedUp, setSignedUp] = React.useState(false);
+
+  // useEffect to navigate after the state is set to true
+  React.useEffect(() => {
+    if (signedUp) {
+      navigate('/');
+    }
+  }, [signedUp, navigate]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -70,65 +66,78 @@ export default function SignUp() {
           if (response.status == 200){
             //TODO Account Creation Successful, redirect to Sign In
             alert("Account Created Successfully, proceed to Sign In")
-            navigate('/signin')
+            setSignedUp(true);
           }
         }
       })
   };
 
+  const handleBackToSignIn = () => {
+    navigate('/');
+  };
+
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth="xs" sx={{height: '100vh', maxHeight: 'none'}}>
+      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
         <CssBaseline />
+        <Container maxWidth="md">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: '15rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar
-            src="/notes.png"
-            sx={{ width: 100, height: 100 }}
-          />
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Email Address"
-              name="username"
-              autoComplete="username"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
-            >
-              Sign Up
-            </Button>
-            <Grid container>
-            </Grid>
-          </Box>
+          <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+            <Typography component="h1" variant="h3" fontWeight={'bold'}>
+              Let's create an account!
+            </Typography>
+          </LinearGradient>
+          <Container maxWidth="xs">
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Email Address"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
+              >
+                Sign Up
+              </Button>
+              <Button
+                fullWidth
+                variant="text"
+                onClick={handleBackToSignIn}
+                sx={{ mt: 2, mb: 2 }}
+              >
+                Back to Sign In
+              </Button>
+              <Grid container>
+              </Grid>
+            </Box>
+          </Container>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
       </Container>
     </ThemeProvider>
   );
