@@ -8,7 +8,8 @@ import base64
 url_server = 'http://127.0.0.1:5002'
 
 def test_add_user():
-    user_input_credentials = {'username': 'coolguy', 'password': "asdf"}
+    user_input_credentials = {'username': 'test_guy5', 'password': 'Ayush', 'prf_full_name': 'Ayush Goyal',
+                              'email': 'ayushg3@illlinois.edu', 'ph_no':'2178190674', 'fav_song': 'All of Me', 'fav_genre':'Hip-Hop' }
     resp = requests.post(f"{url_server}/add_user", json = user_input_credentials) # have to change data to json to have test cases working
     
     assert 'User added sucessfully' in resp.json()['message']
@@ -110,3 +111,18 @@ def test_get_all_songs():
     resp = requests.get(f"{url_server}/get_all_songs")
     assert resp.status_code == 200
     assert 'Songs extracted from database' in resp.json()['message']
+
+def test_get_user_details():
+    user_input_credentials = {'username': 'test_guy4', 'password': 'Ayush', 'prf_full_name': 'Ayush Goyal',
+                              'email': 'ayushg3@illlinois.edu', 'ph_no':'2178190674', 'fav_song': 'All of Me', 'fav_genre':'Hip-Hop' }
+    resp = requests.post(f"{url_server}/add_user", json = user_input_credentials) # have to change data to json to have test cases working
+    
+    assert 'User added sucessfully' in resp.json()['message']
+    assert resp.status_code == 200
+    
+    target_usrname = "test_guy4"
+    payload = {"username": target_usrname}
+    resp = requests.post(f"{url_server}/get_user_details", json = payload)
+    
+    assert resp.status_code == 200
+    assert 'User found' in resp.json()['message']
