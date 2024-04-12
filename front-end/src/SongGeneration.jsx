@@ -12,7 +12,7 @@ import { LinearGradient } from 'react-text-gradients';
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "transparent"
+      default: "#FFFF"
     },
     text: {
       primary: "#191414",
@@ -21,8 +21,8 @@ const themeLight = createTheme({
   }
 });
 
-const song_recommender_api = 'http://127.0.0.1:5000/song_recommender';
-const make_song_api = 'http://127.0.0.1:5000/make_song';
+const song_recommender_api = 'http://127.0.0.1:5002/song_recommender';
+const make_song_api = 'http://127.0.0.1:5002/make_song';
 
 export default function SongGeneration() {
 
@@ -76,8 +76,8 @@ export default function SongGeneration() {
       }
 
       const data = await response.json();
-      console.log(data.song)
-      setMakeSongResult(data.song)
+      console.log(data.song);
+      setMakeSongResult(data.song);
     } catch (error) {
       console.error("Failed to generate song")
     }
@@ -85,7 +85,7 @@ export default function SongGeneration() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
+      <Container component="main" maxWidth={false}>
         <CssBaseline />
         <Container maxWidth="md">
         <Box
@@ -116,35 +116,12 @@ export default function SongGeneration() {
               name="recommender"
               autoComplete="la la la la la"
               autoFocus
-              InputLabelProps={{
-                sx: { 
-                  color: 'white', // Label color
-                  '&.Mui-focused': { // Label color when the input is focused
-                    color: 'white',
-                  }
-                }
-              }}
-              InputProps={{
-                sx: {
-                  color: 'white', // Text color
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color for the outlined variant
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color on hover for the outlined variant
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color when the input is focused for the outlined variant
-                  },
-                },
-              }}
-              variant="outlined"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
             >
               Recommend Song
             </Button>
@@ -160,40 +137,17 @@ export default function SongGeneration() {
             <TextField
               margin="normal"
               fullWidth
-              id="make_song"
+              id="makesong"
               label="Enter a song"
               name="makesong"
               autoComplete="Never gonna give you up"
               autoFocus
-              InputLabelProps={{
-                sx: { 
-                  color: 'white', // Label color
-                  '&.Mui-focused': { // Label color when the input is focused
-                    color: 'white',
-                  }
-                }
-              }}
-              InputProps={{
-                sx: {
-                  color: 'white', // Text color
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color for the outlined variant
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color on hover for the outlined variant
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'white', // Border color when the input is focused for the outlined variant
-                  },
-                },
-              }}
-              variant="outlined"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
             >
               Make Song
             </Button>

@@ -48,6 +48,11 @@ def add_user():
     usr_data = request.get_json()
     password = usr_data.get('password')
     usrname = usr_data.get('username')
+    prf_full_name = usr_data.get('prf_full_name')
+    email = usr_data.get('email')
+    ph_no = usr_data.get('ph_no')
+    fav_song =  usr_data.get('fav_song')
+    fav_genre = usr_data.get('fav_genre')
     
     for user in users_login_data:
         if(user['username']== usrname):
@@ -55,18 +60,33 @@ def add_user():
     
     hashed_password = hash_password(password)
     
-    users_login_data.append({'username':usrname, 'password':hashed_password.decode('utf-8')}) # have to decode to utf-8 format, or else it can't be stored in JSON format
+    users_login_data.append({'username':usrname, 'password':hashed_password.decode('utf-8'), 
+                             'prf_full_name': prf_full_name,'email': email, 'ph_no':ph_no, 
+                             'fav_song': fav_song , 'fav_genre':fav_genre }) # have to decode to utf-8 format, or else it can't be stored in JSON format
     with open('users_login_data.json', 'w') as fil:
         json.dump(users_login_data,fil)
     return jsonify({'message': 'User added sucessfully'}), 200
-    
+
+@app.route('/get_user_details', methods =['POST'])
+def get_user_details():
+    usr_data = request.get_json()
+    usrname = usr_data.get('username')
+    # print(users_login_data)
+    for user in users_login_data:
+        if(user['username']== usrname):
+            # print(user['prf_full_name'])
+            # print(user['email'])
+            return jsonify({'message': 'User found', 'prf_full_name': user['prf_full_name'],'email': user['email'], 'ph_no':user['ph_no'], 
+                             'fav_song': user['ph_no'] , 'fav_genre':user['ph_no'] }), 200
+    return jsonify({'message': 'User not found'}), 404 
+
 @app.route('/get_all_songs', methods=['GET'])
 def get_all_songs():
     try: 
         all_songs = spotify_songs_data['song'].tolist()
         return jsonify({'message': 'Songs extracted from database', 'all_songs': all_songs}), 200
     except Exception as e:
-        print("helooooooo\n",e,'\n')
+        # print("helooooooo\n",e,'\n')
         return jsonify({'message': 'Songs not extracted from database'}), 404
 
 
@@ -105,7 +125,7 @@ def lyrics_wordcloud():
                         'wordcloud_image_as_bytes': base64.b64encode(image_as_bytes.read()).decode('utf-8')}), 200
 
     except Exception as exc:
-        print(exc)
+        # print(exc)
         return jsonify({'message': 'Wordcloud cannot be generated'}), 400
  
 @app.route('/search_lyrics', methods =['POST'])
@@ -127,7 +147,7 @@ def find_song():
     song_to_search = request.args.get('song', '') # defaults to empty string if 'song' is not provided
     arr = (spotify_songs_data[spotify_songs_data['song'].str.contains(song_to_search, case=False)]['song'].tolist())
     # finds all songs containing the input (search the song column), returns the song column, and converts it into a list. case=false is to ignore lower/uppercase
-    print(arr)
+    # print(arr)
     return jsonify(arr)
 
 @app.route('/find_artist', methods=['GET'])
@@ -135,7 +155,7 @@ def find_artist():
     artist_to_search = request.args.get('artist', '') # defaults to empty string if artist not provided
     arr = (spotify_songs_data[spotify_songs_data['artist'].str.contains(artist_to_search, case=False)]['artist'].tolist())
     artistset = list(set(arr)) # first turn our array into a set to remove duplicate artists, then convert back into a list so that it can be jsonified
-    print(artistset)
+    # print(artistset)
     return jsonify(artistset)
 
 
@@ -158,7 +178,7 @@ def song_recommender():
         # print("this is it:", rec_song_info['song'])
         return jsonify({"message": "Recommended song found", "recommended_songs": rec_songs_info['song'].tolist()}), 200
     except Exception as e:
-        print(e)
+        # print(e)
         return jsonify({"message": "Recommended song not found"}), 404 # 404 error message to signify not found
         
 @app.route('/make_song', methods =['POST'])
@@ -181,7 +201,7 @@ def make_song():
         for i in range(10):
             sentence = markov_text_generation_model.make_sentence()
             sentences_generated.append(sentence)
-        print(sentences_generated)
+        # print(sentences_generated)
         
         sentences_generated_filtered = []
         for i in range(10):
@@ -189,11 +209,11 @@ def make_song():
                 sentences_generated_filtered.append(sentences_generated[i])
                
         generated_song = '\n'.join(sentences_generated_filtered)
-        print(generated_song)
+        # print(generated_song)
         # print("heyyy", generated_song)
         return jsonify({"message": "Song generation successfull", "song": generated_song }), 200
     except Exception as e:
-        print(e)
+        # print(e)
         return jsonify({"message": "Song generation unsuccessfull"}), 400
 
 

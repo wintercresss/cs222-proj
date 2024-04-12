@@ -25,7 +25,7 @@ const fetch_songs_api = 'http://127.0.0.1:5002/get_all_songs'
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "transparent"
+      default: "#FFFF"
     },
     text: {
       primary: "#00CCAA",
@@ -65,8 +65,6 @@ export default function SongSearch() {
     }
   };
 
-  const [songResult, setSongResult] = useState()
-
   const handleSubmitSong = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -96,8 +94,6 @@ export default function SongSearch() {
       console.error("Failed to search song")
     }
   };
-
-  const [artistResult, setArtistResult] = useState()
 
   const handleSubmitArtist = async (event) => {
     event.preventDefault();
@@ -149,7 +145,7 @@ export default function SongSearch() {
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
+      <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
         <Box
           sx={{
@@ -166,7 +162,6 @@ export default function SongSearch() {
           </LinearGradient>
           <p>You can search by lyrics, artist, or title</p>
           <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
-            <Grid item xs={12} md={6}>
               <Box
                 sx={{
                   display: 'flex',
@@ -181,13 +176,14 @@ export default function SongSearch() {
                       filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
-                      name="lyrics" />}
+                      name="lyrics" 
+                      />}
                     />
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
                     >
                       Search Lyrics
                     </Button>
@@ -206,13 +202,14 @@ export default function SongSearch() {
                       renderInput={(params) => 
                         <TextField {...params} 
                           label="Search for song names"
-                          name='title'/>}
+                          name='title'
+                          />}
                     />
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
                     >
                       Search Title
                     </Button>
@@ -228,35 +225,26 @@ export default function SongSearch() {
                       freeSolo
                       filterOptions={filterOptions}
                       sx={{ width: 300 }}
-                      renderInput={(params) => 
-                        <TextField {...params} 
-                          label="Search for artists"
-                          name='artist'/>}
+                      renderInput={(params) => <TextField {...params} 
+                        label="Search for Artists"
+                        name='artist'
+                      />}
                     />
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
                     >
                       Search Artist
                     </Button>
                   </Box>
+                  <Box>
+                    <div style={{ color: 'black' }}>
+                      {searchResult}
+                    </div>
+                  </Box>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                  <div>
-                    {searchResult}
-                  </div>
-              </Box>
-            </Grid>
           </Grid>
         </Box>
       </Container>

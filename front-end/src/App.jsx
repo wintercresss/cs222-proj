@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import './App.css'
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Outlet, Navigate, Routes, Route } from 'react-router-dom'
 
+import { AuthProvider, useAuth } from './AuthContext.jsx';
 import WordCloud from './WordCloud'
 import MyProfile from './MyProfile'
 import SongSearch from './SongSearch'
@@ -11,24 +12,34 @@ import SignIn from './SignIn.jsx'
 import SongGeneration from './SongGeneration.jsx'
 import SignUp from './SignUp.jsx'
 
+function ProtectedRoutes() {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated ? (
+    <>
+      <Navbar /> {/* render navbar */}
+      <Outlet /> {/* render the child routes */}
+    </>
+  ) : <Navigate to="/" />;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-          <Navbar />
-          <div className="content-wrapper">
-            <Routes>
-              <Route path='/' element={<WordCloud />} />
-              <Route path='/signin' element={<SignIn />} />
-              <Route path='/signup' element={<SignUp />} />
-              <Route path='/myprofile' element={<MyProfile />} />
-              <Route path='/songsearch' element={<SongSearch />} />
-              <Route path='/songgeneration' element={<SongGeneration />} />
-            </Routes>
-          </div>
-    </>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        <Route element={<ProtectedRoutes />}> {/* render if authentication is successful */}
+          <Route path="/wordcloud" element={<WordCloud />} />
+          <Route path="/myprofile" element={<MyProfile />} />
+          <Route path="/songsearch" element={<SongSearch />} />
+          <Route path="/songgeneration" element={<SongGeneration />} />
+        </Route>
+
+      </Routes>
+    </AuthProvider>
   )
 }
 

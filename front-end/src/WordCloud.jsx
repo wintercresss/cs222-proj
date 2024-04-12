@@ -7,11 +7,17 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
+import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+
+const filterOptions = createFilterOptions({
+  matchFrom: 'any',
+  limit: 25,
+});
 
 const themeLight = createTheme({
   palette: {
     background: {
-      default: "transparent"
+      default: "#FFFF"
     },
     text: {
       primary: "#191414",
@@ -21,6 +27,8 @@ const themeLight = createTheme({
 });
 
 const lyricsWordcloudApi = 'http://127.0.0.1:5002/lyrics_wordcloud';
+const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics';
+const fetch_songs_api = 'http://127.0.0.1:5002/get_all_songs';
 
 export default function WordCloud() {
   const [wordcloudImage, setWordcloudImage] = useState('');
@@ -28,7 +36,29 @@ export default function WordCloud() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const lyrics = formData.get('lyrics'); // Assuming you have a TextField with name="lyrics"
+    const body = formData.get('lyrics');
+    var lyrics = "Not Found";
+    try {
+      const response = await fetch(search_lyric_api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({search_song: body})
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.lyrics)
+      
+      lyrics = data.lyrics
+      
+    } catch (error) {
+      console.log("Search lyrics error")
+    }
 
     try {
       const response = await fetch(lyricsWordcloudApi, {
@@ -45,19 +75,35 @@ export default function WordCloud() {
 
       const data = await response.json();
       setWordcloudImage(`data:image/png;base64,${data.wordcloud_image_as_bytes}`); // Set the src for your image
+      console.log("Word cloud image update")
     } catch (error) {
       console.error("Failed to fetch wordcloud data:", error);
     }
+    
+    
   };
+
+  const [songOptions, setSongOptions] = useState([])
+  fetch(fetch_songs_api, {
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+    },
+    mode: "cors"
+  }).then((response) => {
+    return response.json();
+  }).then((data) => {
+    setSongOptions(data.all_songs)
+  })
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
+      <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
         <Container maxWidth="md">
         <Box
           sx={{
-            marginTop: '15rem',
+            marginTop: '0rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -77,45 +123,19 @@ export default function WordCloud() {
           noValidate
           sx={{ mt: 1 }}
         >
-          <TextField
-          
-            margin="normal"
-            fullWidth
-            name="lyrics"
-            label="Enter a song"
-            type="text"
-            id="lyrics"
-            multiline
-            rows={4}
-            InputLabelProps={{
-              sx: { 
-                color: 'white', // Label color
-                '&.Mui-focused': { // Label color when the input is focused
-                  color: 'white',
-                }
-              }
-            }}
-            InputProps={{
-              sx: {
-                color: 'white', // Text color
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color for the outlined variant
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color on hover for the outlined variant
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color when the input is focused for the outlined variant
-                },
-              },
-            }}
-            variant="outlined"
+          <Autocomplete
+                      disablePortal
+                      options={songOptions}
+                      filterOptions={filterOptions}
+                      renderInput={(params) => <TextField {...params} label="Enter a song"
+                      name="lyrics" 
+            />}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, bgcolor: '#1DB954', '&:hover': { bgcolor: 'darkgreen' } }}
+            sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
           >
             Generate Wordcloud
           </Button>
