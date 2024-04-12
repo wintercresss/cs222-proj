@@ -28,8 +28,8 @@ const themeLight = createTheme({
       default: "#FFFF"
     },
     text: {
-      primary: "#191414",
-      secondary: "#191414"
+      primary: "#00CCAA",
+      secondary: "0000FF"
     }
   }
 });
@@ -86,8 +86,10 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const songString = data.slice(0,9).join(', ');
-      setSearchResult(songString)
+      const songString = data.slice(0,9).join('/n');
+      setSearchResult(songString.split('/n').map((line, index) => (
+        <div>{line}</div>
+      )))
     } catch (error) {
       console.error("Failed to search song")
     }
@@ -115,25 +117,30 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const artistsString = data.slice(0,9).join(', ');
-      setSearchResult(artistsString)
+      const artistsString = data.slice(0,9).join('/n');
+      setSearchResult(artistsString.split('/n').map((line, index) => (
+        <div>{line}</div>
+      )))
     } catch (error) {
       console.error("Failed to search artist")
     }
   };
 
   const [songOptions, setSongOptions] = useState([])
-  fetch(fetch_songs_api, {
-    method: "GET",
-    headers: {
-      'Accept': 'application/json',
-    },
-    mode: "cors"
-  }).then((response) => {
-    return response.json();
-  }).then((data) => {
-    setSongOptions(data.all_songs)
-  })
+  if(songOptions.length == 0){
+    fetch(fetch_songs_api, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+      },
+      mode: "cors"
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      setSongOptions(data.all_songs)
+    })
+  }
+  
   
 
   return (
@@ -189,6 +196,7 @@ export default function SongSearch() {
                       id="title"
                       name="title"
                       options={songOptions}
+                      freeSolo
                       filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => 
@@ -209,11 +217,13 @@ export default function SongSearch() {
                     </Grid>
                   </Box>
                   <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-                    <Autocomplete
+                  <Autocomplete
                       disablePortal
                       id="artist"
                       name="artist"
                       options={artistOptions}
+                      freeSolo
+                      filterOptions={filterOptions}
                       sx={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} 
                         label="Search for Artists"
@@ -244,5 +254,4 @@ export default function SongSearch() {
 
 
 const artistOptions = [
-  {label: "Rick Astley"}
 ]
