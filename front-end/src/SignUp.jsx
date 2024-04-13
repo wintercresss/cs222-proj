@@ -118,10 +118,10 @@ export default function SignUp() {
               <TextField
                 margin="normal"
                 fullWidth
-                name="fullname"
+                name="prf_full_name"
                 label="Full name"
                 type="fullname"
-                id="fullname"
+                id="prf_full_name"
                 autoComplete="current-fullname"
               />
               <TextField
@@ -136,28 +136,28 @@ export default function SignUp() {
               <TextField
                 margin="normal"
                 fullWidth
-                name="phone"
+                name="ph_no"
                 label="Phone Number"
-                type="phone"
-                id="phone"
+                type="ph_no"
+                id="ph_no"
                 autoComplete="current-phone"
               />
               <TextField
                 margin="normal"
                 fullWidth
-                name="favsong"
+                name="fav_song"
                 label="Favorite Song"
-                type="favsong"
-                id="favsong"
+                type="fav_song"
+                id="fav_song"
                 autoComplete="current-song"
               />
               <TextField
                 margin="normal"
                 fullWidth
-                name="favgenre"
+                name="fav_genre"
                 label="Favorite Genre"
-                type="favgenre"
-                id="favgenre"
+                type="fav_genre"
+                id="fav_genre"
                 autoComplete="current-genre"
               />
               <Button

@@ -2,8 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,6 +13,7 @@ import { LinearGradient } from 'react-text-gradients';
 import { useAuth } from './AuthContext.jsx';
 
 const authentication_url = 'http://127.0.0.1:5002/authenticate'
+const userDetailsUrl = 'http://127.0.0.1:5002/get_user_details'
 
 const themeLight = createTheme({
   palette: {
@@ -44,31 +43,52 @@ export default function SignIn() {
 
     fetch(authentication_url, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: json  
     })
-      .then((response) => {
-        if (!response.ok) {
-          if(response.status == 440 || response.status == 401){
-            //TODO Incorrect Password entered
-            alert("Incorrect Password");
-          } else if(response.status == 441){
-            alert("User doesn't exist")
+    .then((response) => {
+          if (!response.ok) {
+            if(response.status == 440 || response.status == 401){
+              //TODO Incorrect Password entered
+              alert("Incorrect Password");
+            } else if(response.status == 441){
+              alert("User doesn't exist")
+            }
+            //TODO handle HTTP error
+            else throw new Error(`HTTP error! Status:  ${response.status}`);
+          } else{
+            if (response.status == 200){
+              //TODO User has signed in, redirect to profile page
+              alert("Authenticated")
+              localStorage.setItem('username', jsonObject.username);
+              return fetch(userDetailsUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({ username: jsonObject.username }) // Ensure you send the necessary identifier to fetch details
+              });
+            }
           }
-          //TODO handle HTTP error
-          else throw new Error(`HTTP error! Status:  ${response.status}`);
-        } else{
-          if (response.status == 200){
-            //TODO User has signed in, redirect to profile page
-            alert("Authenticated")
-            localStorage.setItem('username', JSON.stringify(JSON.parse(json).username));
-            signIn(() => navigate('/myprofile'));
-          }
-        }
-      })
+    })
+    .then(response => response.json())  // Convert the second fetch response to JSON
+    .then(userDetails => {
+      console.log(userDetails)
+      if (!userDetails) {
+        throw new Error("User details retrieval failed - no details returned");
+      }
+      // Store user details in localStorage
+      localStorage.setItem('prf_full_name', userDetails.prf_full_name);
+      localStorage.setItem('email', userDetails.email);
+      localStorage.setItem('ph_no', userDetails.ph_no);
+      localStorage.setItem('fav_song', userDetails.fav_song);
+      localStorage.setItem('fav_genre', userDetails.fav_genre);
+      signIn(() => navigate('/myprofile'));
+    })
+    .catch(error => {
+      console.error('Error during the authentication or fetching user details:', error);
+      alert("Error: " + error.message);
+    });
   };
 
   return (
