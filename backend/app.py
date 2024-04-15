@@ -17,6 +17,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import markovify
 
+import datetime
+
 app = Flask(__name__)
 CORS(app)
 
@@ -145,10 +147,62 @@ def search_lyrics():
 @app.route('/find_song', methods=['GET'])
 def find_song():
     song_to_search = request.args.get('song', '') # defaults to empty string if 'song' is not provided
+    username = request.args.get('username')    # need username information to add to search history
     arr = (spotify_songs_data[spotify_songs_data['song'].str.contains(song_to_search, case=False)]['song'].tolist())
     # finds all songs containing the input (search the song column), returns the song column, and converts it into a list. case=false is to ignore lower/uppercase
     # print(arr)
+
+    song_search_history(song_to_search, username)
     return jsonify(arr)
+
+def song_search_history(search_query, username):
+    file_path = 'song_search_history.json'
+    search_history = {}
+    try:
+        with open(file_path, 'r') as file: # try to open and read the file
+            search_history = json.load(file)
+    except FileNotFoundError: # if file doesn't exist
+        search_history = {}
+    
+
+    if username in search_history:  # key = username, values = list of search queries and timestamps
+        search_history[username].append({
+            'search_query': search_query,
+            'timestamp': datetime.datetime.now().isoformat() # isoformat so that it can work with json
+        })
+    else:
+        search_history[username] = [{
+            'search_query': search_query,
+            'timestamp': datetime.datetime.now().isoformat()
+        }]
+    
+
+    with open(file_path, 'w') as file: # write new record into database
+        json.dump(search_history, file)
+
+@app.route('/get_song_searches', methods=['GET'])
+def get_recent_song_searches():
+    file_path = 'song_search_history.json'
+    username = request.args.get('username')
+
+    search_history = {}
+    try:
+        with open(file_path, 'r') as file: # try to open and read the file
+            search_history = json.load(file)
+    except FileNotFoundError: # if file doesn't exist
+        return jsonify({'message': 'Database not found'}), 404  # if the database doesn't exist
+
+    # because songs are added to the end of the list, they are automatically sorted in reverse order based on time (no need to sort)
+    # for example, the last item in the list is always the most recent search
+
+    if username in search_history:
+        return search_history[username][-10::][::-1]   # get last 10 items of the list, and then reverse it to get the most recent 10 searches ordered by most recent
+    else:
+        return jsonify({'message': 'user doesnt exist'}), 404
+
+
+
+
 
 @app.route('/find_artist', methods=['GET'])
 def find_artist():
