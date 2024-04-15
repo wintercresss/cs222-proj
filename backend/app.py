@@ -77,7 +77,7 @@ def get_user_details():
             # print(user['prf_full_name'])
             # print(user['email'])
             return jsonify({'message': 'User found', 'prf_full_name': user['prf_full_name'],'email': user['email'], 'ph_no':user['ph_no'], 
-                             'fav_song': user['ph_no'] , 'fav_genre':user['ph_no'] }), 200
+                             'fav_song': user['fav_song'] , 'fav_genre':user['fav_genre'] }), 200
     return jsonify({'message': 'User not found'}), 404 
 
 @app.route('/get_all_songs', methods=['GET'])
