@@ -2,7 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -101,7 +100,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="username"
-                label="Email Address"
+                label="Username"
                 name="username"
                 autoComplete="username"
                 autoFocus
@@ -115,6 +114,51 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="prf_full_name"
+                label="Full name"
+                type="fullname"
+                id="prf_full_name"
+                autoComplete="current-fullname"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="email"
+                label="Email Address"
+                type="email"
+                id="email"
+                autoComplete="current-email"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="ph_no"
+                label="Phone Number"
+                type="ph_no"
+                id="ph_no"
+                autoComplete="current-phone"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="fav_song"
+                label="Favorite Song"
+                type="fav_song"
+                id="fav_song"
+                autoComplete="current-song"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="fav_genre"
+                label="Favorite Genre"
+                type="fav_genre"
+                id="fav_genre"
+                autoComplete="current-genre"
               />
               <Button
                 type="submit"
