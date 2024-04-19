@@ -164,54 +164,44 @@ def find_song():
     arr = (spotify_songs_data[spotify_songs_data['song'].str.contains(song_to_search, case=False)]['song'].tolist())
     # finds all songs containing the input (search the song column), returns the song column, and converts it into a list. case=false is to ignore lower/uppercase
 
-    song_search_history(song_to_search, username)
     return jsonify(arr)
 
-def song_search_history(search_query, username):
-    file_path = 'song_search_history.json'
-    search_history = {}
-    try:
-        with open(file_path, 'r') as file: # try to open and read the file
-            search_history = json.load(file)
-    except FileNotFoundError: # if file doesn't exist
-        search_history = {}
-    
 
-    if username in search_history:  # key = username, values = list of search queries and timestamps
-        search_history[username].append({
-            'search_query': search_query,
-            'timestamp': datetime.datetime.now().isoformat() # isoformat so that it can work with json
-        })
-    else:
-        search_history[username] = [{
-            'search_query': search_query,
-            'timestamp': datetime.datetime.now().isoformat()
-        }]
-    
+@app.route('/insert_search', methods=['POST'])
+def add_to_search_database():
+    name = request.args.get('username')
+    query = request.args.get('song')
 
-    with open(file_path, 'w') as file: # write new record into database
-        json.dump(search_history, file)
+    conn = sqlite3.connect('search_history.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+                CREATE TABLE IF NOT EXISTS search_history (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT NOT NULL,
+                    search_query TEXT NOT NULL,
+                    search_time DATETIME NOT NULL
+                    )
+                   ''') # create the database if it doesn't exist
+    current_time = datetime.datetime.now()
 
-@app.route('/get_song_searches', methods=['GET'])
-def get_recent_song_searches():
-    file_path = 'song_search_history.json'
-    username = request.args.get('username')
+    cursor.execute('''
+                    INSERT INTO search_history (username, search_query, search_time)
+                   VALUES (?, ?, ?)
+                   ''', (name, query, current_time))
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success', 'message': 'Search inserted successfully'}), 201
 
-    search_history = {}
-    try:
-        with open(file_path, 'r') as file: # try to open and read the file
-            search_history = json.load(file)
-    except FileNotFoundError: # if file doesn't exist
-        return jsonify({'message': 'Database not found'}), 404  # if the database doesn't exist
-
-    # because songs are added to the end of the list, they are automatically sorted in reverse order based on time (no need to sort)
-    # for example, the last item in the list is always the most recent search
-
-    if username in search_history:
-        return search_history[username][-10::][::-1]   # get last 10 items of the list, and then reverse it to get the most recent 10 searches ordered by most recent
-    else:
-        return jsonify({'message': 'user doesnt exist'}), 404
-
+@app.route('/get_searches', methods=['GET'])
+def get_searches():
+    name = request.args.get('username')
+    conn = sqlite3.connect('search_history.db')
+    conn.row_factory = sqlite3.Row  # Set the row_factory to sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM search_history WHERE username = ? ORDER BY search_time DESC", (name,)) # order by most recent searches
+    searches = cursor.fetchall()
+    conn.close()
+    return jsonify([{'id': row['id'], 'username': row['username'], 'search_query': row['search_query'], 'search_time': row['search_time']} for row in searches])
 
 
 
