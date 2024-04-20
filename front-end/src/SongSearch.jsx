@@ -94,6 +94,8 @@ export default function SongSearch() {
     } catch (error) {
       console.error("Failed to search song")
     }
+
+    localStorage.setItem('cs222-gp-t16-update-history', "true");
   };
 
   const handleSubmitArtist = async (event) => {
