@@ -72,6 +72,7 @@ export default function SongSearch() {
     try {
       const url = new URL(find_song_api);
       url.searchParams.append('song', body);
+      url.searchParams.append('username', localStorage.getItem('username'));
 
       const response = await fetch(url, {
         method: 'GET',

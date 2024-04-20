@@ -51,6 +51,24 @@ export default function MyProfile() {
                     Favourite Genre: {localStorage.getItem('fav_genre')}
                   </Typography>
                 </Box>
+
+                <Box
+                sx={{
+                  marginTop: '5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textAlign: 'center',
+                  justifyContent: 'left',
+                  width: '30rem',
+                  height: '15rem',
+                  borderRadius: 5,
+                  bgcolor: '#eff0ef',
+                }}>
+                  
+                  <Typography component="h5" variant="h5" fontWeight={'medium'} marginBottom={'10px'} marginLeft={'25px'}>
+                    Search History
+                  </Typography>
+                </Box>
             </Box>
         </Container>
   );
