@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { LinearGradient } from 'react-text-gradients';
 import { useAuth } from './AuthContext.jsx';
+import background from './assets/background.mov'
 
 const authentication_url = 'http://127.0.0.1:5002/authenticate'
 const userDetailsUrl = 'http://127.0.0.1:5002/get_user_details'
@@ -24,6 +25,18 @@ const themeLight = createTheme({
       primary: "#191414",
       secondary: "#191414"
     }
+  },
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          background: 'none',  // Ensuring container has no background
+          position: 'relative', // Needed for video background context
+          zIndex: 2,            // Ensures form elements are above the video
+        }
+      }
+    }
+    
   }
 });
 
@@ -93,6 +106,16 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={themeLight}>
+      <video autoPlay loop muted style={{
+        position: 'fixed',
+        right: 0,
+        bottom: 0,
+        minWidth: '100%',
+        minHeight: '100%',
+        zIndex: 1, // Ensures the video stays behind all content
+      }}>
+        <source src={background} type="video/mp4" />
+      </video>
       <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
         <CssBaseline />
         <Container maxWidth="md">
