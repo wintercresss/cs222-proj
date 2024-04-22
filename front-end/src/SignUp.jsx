@@ -31,7 +31,7 @@ export default function SignUp() {
   // useEffect to navigate after the state is set to true
   React.useEffect(() => {
     if (signedUp) {
-      navigate('/');
+      navigate('/signin');
     }
   }, [signedUp, navigate]);
 
@@ -72,7 +72,7 @@ export default function SignUp() {
   };
 
   const handleBackToSignIn = () => {
-    navigate('/');
+    navigate('/signin');
   };
 
   return (
