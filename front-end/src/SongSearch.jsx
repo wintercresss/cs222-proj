@@ -10,6 +10,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LinearGradient } from 'react-text-gradients';
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 
 const filterOptions = createFilterOptions({
   matchFrom: 'any',
@@ -35,6 +39,12 @@ const themeLight = createTheme({
 });
 
 export default function SongSearch() {
+  const [SearchResultDialogOpen, setSearchResultDialogOpen] = useState(false);
+
+  const handleSearchResultClose = () => {
+    setSearchResultDialogOpen(false);
+  };
+
   const [searchResult, setSearchResult] = useState()
 
   const handleSubmitLyrics = async (event) => {
@@ -60,6 +70,7 @@ export default function SongSearch() {
       setSearchResult(data.lyrics.split('\n').map((line, index) => (
         <div>{line}</div>
       )))
+      setSearchResultDialogOpen(true)
     } catch (error) {
       setSearchResult("None")
     }
@@ -88,6 +99,7 @@ export default function SongSearch() {
       const data = await response.json();
       const songString = data.slice(0,9).join(', ');
       setSearchResult(songString)
+      setSearchResultDialogOpen(true)
     } catch (error) {
       console.error("Failed to search song")
     }
@@ -117,6 +129,7 @@ export default function SongSearch() {
       const data = await response.json();
       const artistsString = data.slice(0,9).join(', ');
       setSearchResult(artistsString)
+      setSearchResultDialogOpen(true)
     } catch (error) {
       console.error("Failed to search artist")
     }
@@ -230,9 +243,23 @@ export default function SongSearch() {
                     </Button>
                   </Box>
                   <Box>
-                    <div style={{ color: 'black' }}>
-                      {searchResult}
-                    </div>
+                    <Dialog
+                      open={SearchResultDialogOpen}
+                      onClose={handleSearchResultClose}
+                      aria-labelledby="searchresult-dialog-title"
+                      aria-describedby="searchresult-dialog-description"
+                    >
+                      <DialogContent>
+                        <DialogContentText id="searchresult-dialog-description">
+                          {searchResult}
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleSearchResultClose} color="primary">
+                          Close
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </Box>
               </Box>
           </Grid>
