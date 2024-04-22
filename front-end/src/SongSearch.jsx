@@ -83,6 +83,7 @@ export default function SongSearch() {
     try {
       const url = new URL(find_song_api);
       url.searchParams.append('song', body);
+      url.searchParams.append('username', localStorage.getItem('username'));
 
       const response = await fetch(url, {
         method: 'GET',
@@ -105,6 +106,8 @@ export default function SongSearch() {
     } catch (error) {
       console.error("Failed to search song")
     }
+
+    localStorage.setItem('cs222-gp-t16-update-history', "true");
   };
 
   const handleSubmitArtist = async (event) => {

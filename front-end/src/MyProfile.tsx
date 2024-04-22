@@ -1,10 +1,34 @@
 import * as React from 'react';
+import {useState} from 'react';
 import { Container, CssBaseline } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
+const get_search_history_api = "http://127.0.0.1:5002/get_song_searches"
+
 export default function MyProfile() {
+  const initialHistory = ['Despacito', 'Pokerface']
+  const [history, setHistory] = useState(initialHistory)
+  if(localStorage.getItem('cs222-gp-t16-update-history') == "true"){
+    localStorage.setItem('cs222-gp-t16-update-history', "false")
+
+    const url = new URL(get_search_history_api);
+    var username =  localStorage.getItem("username")
+    if (username == null) username = ""
+    url.searchParams.append('username', username);
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+      },
+      mode: "cors",
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      console.log(data);
+    })
+  }
   return (
         <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
           <CssBaseline/>
@@ -51,7 +75,29 @@ export default function MyProfile() {
                     Favourite Genre: {localStorage.getItem('fav_genre')}
                   </Typography>
                 </Box>
+
+                <Box
+                sx={{
+                  marginTop: '5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textAlign: 'center',
+                  justifyContent: 'left',
+                  width: '30rem',
+                  height: '15rem',
+                  borderRadius: 5,
+                  bgcolor: '#eff0ef',
+                }}>
+                  
+                  <Typography component="h5" variant="h5" fontWeight={'medium'} marginBottom={'10px'} marginLeft={'25px'}>
+                    Search History
+                    {history.map(search => (
+                      <li>{search}</li>
+                    ))}
+                  </Typography>
+                </Box>
             </Box>
         </Container>
   );
 }
+
