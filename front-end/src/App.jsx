@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import React from 'react'
 import { Outlet, Navigate, Routes, Route } from 'react-router-dom'
@@ -11,6 +10,7 @@ import { Navbar } from './NavBar.jsx'
 import SignIn from './SignIn.jsx'
 import SongGeneration from './SongGeneration.jsx'
 import SignUp from './SignUp.jsx'
+import LandingPage from './LandingPage.jsx';
 
 function ProtectedRoutes() {
   const { isAuthenticated } = useAuth();
@@ -28,7 +28,8 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
         <Route element={<ProtectedRoutes />}> {/* render if authentication is successful */}

@@ -106,7 +106,7 @@ export default function SignIn() {
         >
           <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
             <Typography component="h1" variant="h3" fontWeight={'bold'}>
-              Welcome to Song Assistance!
+              Sign In
             </Typography>
           </LinearGradient>
           <Container maxWidth="xs">
