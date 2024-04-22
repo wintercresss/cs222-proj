@@ -1,6 +1,7 @@
 from flask import Flask, request, make_response, jsonify
 # from flask_sqlalchemy import SQLAlchemy
 import json
+import sqlite3
 import bcrypt
 from wordcloud import WordCloud
 import matplotlib.pyplot as plot
@@ -17,11 +18,30 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import markovify
 
+import datetime
+
 app = Flask(__name__)
 CORS(app)
 
+def transfer_data_to_database():
+    conn = sqlite3.connect('users_login_data.db', check_same_thread =False)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users_login_data';")
+    if cursor.fetchone() is None:
+        cursor.execute("CREATE TABLE users_login_data (username text, password text, prf_full_name text,email text, ph_no text, fav_song text, fav_genre text);")
+        
+    with open('users_login_data.json', 'r') as json_file:
+        data = json.load(json_file)
+        for item in data:
+            cursor.execute("INSERT INTO users_login_data (username, password, prf_full_name, email, ph_no, fav_song, fav_genre ) VALUES (?, ?, ?, ? , ?, ?, ?);", (item["username"], item["password"], item["prf_full_name"], item["email"], item["ph_no"], item["fav_song"], item["fav_genre"]))
+            # cursor.execute("SELECT email FROM users_login_data WHERE username = 'test_guy14';")
+            # res = cursor.fetchall()
+            # print(res,'\n')
+    conn.commit()
+    conn.close()
+
 # Read the spotify songs data file 
-spotify_songs_data = pd.read_csv('Spotify_Million_Song_Dataset_exported.csv')
+spotify_songs_data = pd.read_csv('Spotify_Million_Song_Dataset_exported.csv') 
 
 def get_data_from_file():
     try: 
@@ -65,17 +85,15 @@ def add_user():
                              'fav_song': fav_song , 'fav_genre':fav_genre }) # have to decode to utf-8 format, or else it can't be stored in JSON format
     with open('users_login_data.json', 'w') as fil:
         json.dump(users_login_data,fil)
+    transfer_data_to_database() # Data transfer to database
     return jsonify({'message': 'User added sucessfully'}), 200
 
 @app.route('/get_user_details', methods =['POST'])
 def get_user_details():
     usr_data = request.get_json()
     usrname = usr_data.get('username')
-    # print(users_login_data)
     for user in users_login_data:
         if(user['username']== usrname):
-            # print(user['prf_full_name'])
-            # print(user['email'])
             return jsonify({'message': 'User found', 'prf_full_name': user['prf_full_name'],'email': user['email'], 'ph_no':user['ph_no'], 
                              'fav_song': user['fav_song'] , 'fav_genre':user['fav_genre'] }), 200
     return jsonify({'message': 'User not found'}), 404 
@@ -86,7 +104,6 @@ def get_all_songs():
         all_songs = spotify_songs_data['song'].tolist()
         return jsonify({'message': 'Songs extracted from database', 'all_songs': all_songs}), 200
     except Exception as e:
-        # print("helooooooo\n",e,'\n')
         return jsonify({'message': 'Songs not extracted from database'}), 404
 
 
@@ -125,7 +142,6 @@ def lyrics_wordcloud():
                         'wordcloud_image_as_bytes': base64.b64encode(image_as_bytes.read()).decode('utf-8')}), 200
 
     except Exception as exc:
-        # print(exc)
         return jsonify({'message': 'Wordcloud cannot be generated'}), 400
  
 @app.route('/search_lyrics', methods =['POST'])
@@ -138,24 +154,73 @@ def search_lyrics():
         return jsonify({'message': 'Song is not found'}), 404 # 404 error code to signify not found
     
     song_details = search_result.iloc[0] # Extract the row 1 details from the search result dataframe 
-    # print(song_details['text'])
     
     return jsonify({'message': 'Song is found', 'lyrics': song_details['text']}), 200
 
 @app.route('/find_song', methods=['GET'])
 def find_song():
     song_to_search = request.args.get('song', '') # defaults to empty string if 'song' is not provided
+    username = request.args.get('username')    # need username information to add to search history
     arr = (spotify_songs_data[spotify_songs_data['song'].str.contains(song_to_search, case=False)]['song'].tolist())
     # finds all songs containing the input (search the song column), returns the song column, and converts it into a list. case=false is to ignore lower/uppercase
-    # print(arr)
+
+    song_search_history(song_to_search, username)
     return jsonify(arr)
+
+def song_search_history(search_query, username):
+    file_path = 'song_search_history.json'
+    search_history = {}
+    try:
+        with open(file_path, 'r') as file: # try to open and read the file
+            search_history = json.load(file)
+    except FileNotFoundError: # if file doesn't exist
+        search_history = {}
+    
+
+    if username in search_history:  # key = username, values = list of search queries and timestamps
+        search_history[username].append({
+            'search_query': search_query,
+            'timestamp': datetime.datetime.now().isoformat() # isoformat so that it can work with json
+        })
+    else:
+        search_history[username] = [{
+            'search_query': search_query,
+            'timestamp': datetime.datetime.now().isoformat()
+        }]
+    
+
+    with open(file_path, 'w') as file: # write new record into database
+        json.dump(search_history, file)
+
+@app.route('/get_song_searches', methods=['GET'])
+def get_recent_song_searches():
+    file_path = 'song_search_history.json'
+    username = request.args.get('username')
+
+    search_history = {}
+    try:
+        with open(file_path, 'r') as file: # try to open and read the file
+            search_history = json.load(file)
+    except FileNotFoundError: # if file doesn't exist
+        return jsonify({'message': 'Database not found'}), 404  # if the database doesn't exist
+
+    # because songs are added to the end of the list, they are automatically sorted in reverse order based on time (no need to sort)
+    # for example, the last item in the list is always the most recent search
+
+    if username in search_history:
+        return search_history[username][-10::][::-1]   # get last 10 items of the list, and then reverse it to get the most recent 10 searches ordered by most recent
+    else:
+        return jsonify({'message': 'user doesnt exist'}), 404
+
+
+
+
 
 @app.route('/find_artist', methods=['GET'])
 def find_artist():
     artist_to_search = request.args.get('artist', '') # defaults to empty string if artist not provided
     arr = (spotify_songs_data[spotify_songs_data['artist'].str.contains(artist_to_search, case=False)]['artist'].tolist())
     artistset = list(set(arr)) # first turn our array into a set to remove duplicate artists, then convert back into a list so that it can be jsonified
-    # print(artistset)
     return jsonify(artistset)
 
 
@@ -175,10 +240,8 @@ def song_recommender():
         
         top_10_indices = cosine_similarities_flattened.argsort()[-10:][::-1] # find the top 10 songs, ordered by best to worst match
         rec_songs_info = spotify_songs_data.iloc[top_10_indices]
-        # print("this is it:", rec_song_info['song'])
         return jsonify({"message": "Recommended song found", "recommended_songs": rec_songs_info['song'].tolist()}), 200
     except Exception as e:
-        # print(e)
         return jsonify({"message": "Recommended song not found"}), 404 # 404 error message to signify not found
         
 @app.route('/make_song', methods =['POST'])
@@ -201,7 +264,6 @@ def make_song():
         for i in range(10):
             sentence = markov_text_generation_model.make_sentence()
             sentences_generated.append(sentence)
-        # print(sentences_generated)
         
         sentences_generated_filtered = []
         for i in range(10):
@@ -209,11 +271,9 @@ def make_song():
                 sentences_generated_filtered.append(sentences_generated[i])
                
         generated_song = '\n'.join(sentences_generated_filtered)
-        # print(generated_song)
-        # print("heyyy", generated_song)
+
         return jsonify({"message": "Song generation successfull", "song": generated_song }), 200
     except Exception as e:
-        # print(e)
         return jsonify({"message": "Song generation unsuccessfull"}), 400
 
 
