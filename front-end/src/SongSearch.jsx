@@ -25,6 +25,7 @@ const search_lyric_api = 'http://127.0.0.1:5002/search_lyrics'
 const find_song_api = 'http://127.0.0.1:5002/find_song'
 const find_artist_api = 'http://127.0.0.1:5002/find_artist'
 const fetch_songs_api = 'http://127.0.0.1:5002/get_all_songs'
+const record_search_api = 'http://127.0.0.1:5002/insert_search'
 
 const themeLight = createTheme({
   palette: {
@@ -52,6 +53,18 @@ export default function SongSearch() {
     const formData = new FormData(event.currentTarget);
     const body = formData.get('lyrics');
     try {
+      const url2 = new URL(record_search_api);
+      url2.searchParams.append('song', body);
+      url2.searchParams.append('username', localStorage.getItem('username'));
+      const resp2 = await(fetch(url2, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        }
+      }))
+      const data2 = await resp2.json();
+
+
       const response = await fetch(search_lyric_api, {
         method: 'POST',
         headers: {
@@ -83,7 +96,17 @@ export default function SongSearch() {
     try {
       const url = new URL(find_song_api);
       url.searchParams.append('song', body);
-      url.searchParams.append('username', localStorage.getItem('username'));
+      const url2 = new URL(record_search_api);
+      url2.searchParams.append('song', body);
+      url2.searchParams.append('username', localStorage.getItem('username'));
+
+      const resp2 = await(fetch(url2, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        }
+      }))
+      const data2 = await resp2.json();
 
       const response = await fetch(url, {
         method: 'GET',
@@ -106,8 +129,6 @@ export default function SongSearch() {
     } catch (error) {
       console.error("Failed to search song")
     }
-
-    localStorage.setItem('cs222-gp-t16-update-history', "true");
   };
 
   const handleSubmitArtist = async (event) => {
