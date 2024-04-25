@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -40,12 +41,6 @@ const themeLight = createTheme({
 });
 
 export default function SongSearch() {
-  const [SearchResultDialogOpen, setSearchResultDialogOpen] = useState(false);
-
-  const handleSearchResultClose = () => {
-    setSearchResultDialogOpen(false);
-  };
-
   const [searchResult, setSearchResult] = useState()
 
   const handleSubmitLyrics = async (event) => {
@@ -83,7 +78,6 @@ export default function SongSearch() {
       setSearchResult(data.lyrics.split('\n').map((line, index) => (
         <div>{line}</div>
       )))
-      setSearchResultDialogOpen(true)
     } catch (error) {
       setSearchResult("None")
     }
@@ -125,9 +119,8 @@ export default function SongSearch() {
       setSearchResult(songString.split('/n').map((line, index) => (
         <div>{line}</div>
       )))
-      setSearchResultDialogOpen(true)
     } catch (error) {
-      console.error("Failed to search song")
+      setSearchResult("None")
     }
   };
 
@@ -158,9 +151,8 @@ export default function SongSearch() {
       setSearchResult(artistsString.split('/n').map((line, index) => (
         <div>{line}</div>
       )))
-      setSearchResultDialogOpen(true)
     } catch (error) {
-      console.error("Failed to search artist")
+      setSearchResult("No artists found")
     }
   };
 
@@ -179,126 +171,119 @@ export default function SongSearch() {
     })
   }
   
-  
+  const searchBoxes = <Box
+  sx={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }}
+>
+    <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
+      <Autocomplete
+        disablePortal
+        options={songOptions}
+        filterOptions={filterOptions}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
+        name="lyrics" 
+        />}
+      />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
+      >
+        Search Lyrics
+      </Button>
+      <Grid container>
+      </Grid>
+    </Box>  
+    <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
+    <Autocomplete
+        disablePortal
+        id="title"
+        name="title"
+        options={songOptions}
+        freeSolo
+        filterOptions={filterOptions}
+        sx={{ width: 300 }}
+        renderInput={(params) => 
+          <TextField {...params} 
+            label="Search for song names"
+            name='title'
+            />}
+      />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
+      >
+        Search Title
+      </Button>
+      <Grid container>
+      </Grid>
+    </Box>
+    <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
+    <Autocomplete
+        disablePortal
+        id="artist"
+        name="artist"
+        options={artistOptions}
+        freeSolo
+        filterOptions={filterOptions}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} 
+          label="Search for Artists"
+          name='artist'
+        />}
+      />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
+      >
+        Search Artist
+      </Button>
+    </Box>
+</Box>
 
   return (
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
+        
         <Box
-          sx={{
-            marginTop: '15rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
-            <Typography component="h1" variant="h3" fontWeight={'bold'}>
-              Welcome to Search page!
-            </Typography>
-          </LinearGradient>
-          <p>You can search by lyrics, artist, or title</p>
-          <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                  <Box component="form" onSubmit={handleSubmitLyrics} noValidate sx={{ mt: 1 }}>
-                    <Autocomplete
-                      disablePortal
-                      options={songOptions}
-                      filterOptions={filterOptions}
-                      sx={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} label="Search Song Lyrics"
-                      name="lyrics" 
-                      />}
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
-                    >
-                      Search Lyrics
-                    </Button>
-                    <Grid container>
-                    </Grid>
-                  </Box>  
-                  <Box component="form" onSubmit={handleSubmitSong} noValidate sx={{ mt: 1 }}>
-                  <Autocomplete
-                      disablePortal
-                      id="title"
-                      name="title"
-                      options={songOptions}
-                      freeSolo
-                      filterOptions={filterOptions}
-                      sx={{ width: 300 }}
-                      renderInput={(params) => 
-                        <TextField {...params} 
-                          label="Search for song names"
-                          name='title'
-                          />}
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
-                    >
-                      Search Title
-                    </Button>
-                    <Grid container>
-                    </Grid>
-                  </Box>
-                  <Box component="form" onSubmit={handleSubmitArtist} noValidate sx={{ mt: 1 }}>
-                  <Autocomplete
-                      disablePortal
-                      id="artist"
-                      name="artist"
-                      options={artistOptions}
-                      freeSolo
-                      filterOptions={filterOptions}
-                      sx={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} 
-                        label="Search for Artists"
-                        name='artist'
-                      />}
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
-                    >
-                      Search Artist
-                    </Button>
-                  </Box>
-                  <Box>
-                    <Dialog
-                      open={SearchResultDialogOpen}
-                      onClose={handleSearchResultClose}
-                      aria-labelledby="searchresult-dialog-title"
-                      aria-describedby="searchresult-dialog-description"
-                    >
-                      <DialogContent>
-                        <DialogContentText id="searchresult-dialog-description">
-                          {searchResult}
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleSearchResultClose} color="primary">
-                          Close
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </Box>
-              </Box>
-          </Grid>
-        </Box>
+  sx={{
+    marginTop: '5rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }}
+>
+  <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+    <Typography component="h1" variant="h3" fontWeight={'bold'}>
+      Welcome to Search page!
+    </Typography>
+  </LinearGradient>
+  <p>You can search by lyrics, artist, or title</p>
+  <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}
+  >
+  <Card variant="outlined" sx={{
+    marginTop: '2rem',
+    marginLeft: '8rem'
+  }}>{searchBoxes}</Card>
+  <Card variant="outlined" sx={{
+    marginTop: '2rem',
+    marginLeft: '8rem',
+    width: '50rem',
+    height: '28rem',
+    overflow: 'auto'
+  }}>{searchResult}</Card>
+  </Grid>
+</Box>
       </Container>
     </ThemeProvider>
   );

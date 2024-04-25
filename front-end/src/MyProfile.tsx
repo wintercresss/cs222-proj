@@ -4,6 +4,7 @@ import { Button, Container, CssBaseline } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card'
 
 const get_search_history_api = "http://127.0.0.1:5002/get_searches"
 
