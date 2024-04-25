@@ -1,18 +1,21 @@
 import * as React from 'react';
 import {useState} from 'react';
-import { Container, CssBaseline } from '@mui/material';
+import { Button, Container, CssBaseline } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
-const get_search_history_api = "http://127.0.0.1:5002/get_song_searches"
+const get_search_history_api = "http://127.0.0.1:5002/get_searches"
 
 export default function MyProfile() {
-  const initialHistory = ['Despacito', 'Pokerface']
+  const initialHistory = [{
+    "id": 3,
+    "search_query": "",
+    "search_time": "2024-04-22 18:47:53.319150",
+    "username": "A"
+}]
   const [history, setHistory] = useState(initialHistory)
-  if(localStorage.getItem('cs222-gp-t16-update-history') == "true"){
-    localStorage.setItem('cs222-gp-t16-update-history', "false")
-
+  function handleRefresh(){
     const url = new URL(get_search_history_api);
     var username =  localStorage.getItem("username")
     if (username == null) username = ""
@@ -26,8 +29,11 @@ export default function MyProfile() {
     }).then((response) => {
       return response.json();
     }).then((data) => {
-      console.log(data);
+      setHistory(data);
     })
+  }
+  if(history == initialHistory){
+    handleRefresh()
   }
   return (
         <Container component="main" maxWidth={false} sx={{height: '100vh', maxHeight: 'none'}}>
@@ -84,7 +90,7 @@ export default function MyProfile() {
                   textAlign: 'center',
                   justifyContent: 'left',
                   width: '30rem',
-                  height: '15rem',
+                  height: '22rem',
                   borderRadius: 5,
                   bgcolor: '#eff0ef',
                 }}>
@@ -92,7 +98,7 @@ export default function MyProfile() {
                   <Typography component="h5" variant="h5" fontWeight={'medium'} marginBottom={'10px'} marginLeft={'25px'}>
                     Search History
                     {history.map(search => (
-                      <li>{search}</li>
+                      <li>{search.search_query}</li>
                     ))}
                   </Typography>
                 </Box>
