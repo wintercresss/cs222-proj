@@ -118,6 +118,7 @@ export default function WordCloud() {
             </Typography>
           </LinearGradient>
           <p>You can generate a Wordcloud from a song</p>
+          <p>Wordclouds may take a couple seconds to generate</p>
         </Box>
         <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
         <Card>
