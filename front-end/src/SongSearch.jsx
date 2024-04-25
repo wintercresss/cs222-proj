@@ -41,7 +41,7 @@ const themeLight = createTheme({
 });
 
 export default function SongSearch() {
-  const [searchResult, setSearchResult] = useState()
+  const [searchResult, setSearchResult] = useState("Try searching something!")
 
   const handleSubmitLyrics = async (event) => {
     event.preventDefault();
@@ -254,7 +254,6 @@ export default function SongSearch() {
     <ThemeProvider theme={themeLight}>
       <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
-        
         <Box
   sx={{
     marginTop: '5rem',
@@ -268,9 +267,7 @@ export default function SongSearch() {
       Welcome to Search page!
     </Typography>
   </LinearGradient>
-  <p>You can search by lyrics, artist, or title</p>
-  <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}
-  >
+  <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
   <Card variant="outlined" sx={{
     marginTop: '2rem',
     marginLeft: '8rem'
