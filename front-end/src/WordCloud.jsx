@@ -5,6 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Card from  '@mui/material/Card';
 import { Typography } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
@@ -84,23 +86,24 @@ export default function WordCloud() {
   };
 
   const [songOptions, setSongOptions] = useState([])
-  fetch(fetch_songs_api, {
-    method: "GET",
-    headers: {
-      'Accept': 'application/json',
-    },
-    mode: "cors"
-  }).then((response) => {
-    return response.json();
-  }).then((data) => {
-    setSongOptions(data.all_songs)
-  })
+  if(songOptions.length == 0){
+    fetch(fetch_songs_api, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+      },
+      mode: "cors"
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      setSongOptions(data.all_songs)
+    })
+  }
+
 
   return (
     <ThemeProvider theme={themeLight}>
-      <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
-        <Container maxWidth="md">
         <Box
           sx={{
             marginTop: '0rem',
@@ -114,14 +117,18 @@ export default function WordCloud() {
               Welcome to WordCloud page!
             </Typography>
           </LinearGradient>
-          <p>You can generate Wordcloud</p>
+          <p>You can generate a Wordcloud from a song</p>
+          <p>Wordclouds may take a couple seconds to generate</p>
         </Box>
-        <Container maxWidth="sm">
+        <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
+        <Card>
         <Box
           component="form"
           onSubmit={handleSubmit}
           noValidate
-          sx={{ mt: 1 }}
+          marginLeft="15rem"
+          marginRight="8rem"
+          sx={{ width:"15rem", height:"30rem" }}
         >
           <Autocomplete
                       disablePortal
@@ -135,15 +142,23 @@ export default function WordCloud() {
             type="submit"
             fullWidth
             variant="contained"
+            marginTop="10rem"
             sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
           >
             Generate Wordcloud
           </Button>
         </Box>
-        {wordcloudImage && <img src={wordcloudImage} alt="Wordcloud" style={{ height: '100%', width: '100%' }} />}
-        </Container>
-        </Container>
-      </Container>
+        </Card>
+        <Card
+        marginLeft="10rem"
+        sx={{
+          width:"50rem",
+          height:"30rem"
+        }}
+        >
+          {wordcloudImage && <img src={wordcloudImage} alt="Wordcloud" style={{ height: '100%', width: '100%' }} />}
+        </Card>
+        </Grid>
     </ThemeProvider>
   );
 }

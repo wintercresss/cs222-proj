@@ -6,13 +6,9 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 import { Typography } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
 
 const themeLight = createTheme({
   palette: {
@@ -30,17 +26,6 @@ const song_recommender_api = 'http://127.0.0.1:5002/song_recommender';
 const make_song_api = 'http://127.0.0.1:5002/make_song';
 
 export default function SongGeneration() {
-  const [RecommenderDialogOpen, setRecommenderDialogOpen] = useState(false);
-  const [MakeSongDialogOpen, setMakeSongDialogOpen] = useState(false);
-
-  const handleRecommenderClose = () => {
-    setRecommenderDialogOpen(false);
-  };
-
-  const handleMakeSongClose = () => {
-    setMakeSongDialogOpen(false);
-  };
-
   const [RecommenderResult, setRecommenderResult] = useState()
 
   const handleSubmitRecommender = async (event) => {
@@ -65,13 +50,10 @@ export default function SongGeneration() {
       console.log(data.recommended_songs)
       const recommendedstring = data.recommended_songs.join(', ');
       setRecommenderResult(recommendedstring)
-      setRecommenderDialogOpen(true);
     } catch (error) {
       console.error("Failed to search recommended song")
     }
   };
-
-  const [MakeSongResult, setMakeSongResult] = useState()
 
   const handleSubmitMakeSong = async (event) => {
     event.preventDefault();
@@ -93,8 +75,7 @@ export default function SongGeneration() {
 
       const data = await response.json();
       console.log(data.song);
-      setMakeSongResult(data.song);
-      setMakeSongDialogOpen(true);
+      SetRecommenderResult(data.song);
     } catch (error) {
       console.error("Failed to generate song")
     }
@@ -107,7 +88,7 @@ export default function SongGeneration() {
         <Container maxWidth="md">
         <Box
           sx={{
-            marginTop: '15rem',
+            marginTop: '0rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -120,14 +101,24 @@ export default function SongGeneration() {
           </LinearGradient>
           <p>You can recommend and generate song</p>
         </Box>
-        <Container maxWidth="sm">
-        <Box component="form" onSubmit={handleSubmitRecommender} noValidate sx={{ mt: 1 }}>
-          <Typography component="h1" variant="h6" align="left" fontWeight={'bold'} color = "white" gutterBottom>
-          Song Recommendation
-          </Typography>
+        </Container>
+
+        <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '5px' }}>
+          <Box
+          marginLeft="15rem"
+          marginRight="10rem"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',}}>
+          <Box component="form" onSubmit={handleSubmitRecommender} noValidate
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',}}>
             <TextField
               margin="normal"
-              fullWidth
+              width="30rem"
               id="song_recommender"
               label="Enter a song"
               name="recommender"
@@ -136,50 +127,29 @@ export default function SongGeneration() {
             />
             <Button
               type="submit"
-              fullWidth
+              width="30rem"
               variant="contained"
               sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
             >
               Recommend Song
             </Button>
-            <Grid container>
-            </Grid>
           </Box>
           
-          <Dialog
-            open={RecommenderDialogOpen}
-            onClose={handleRecommenderClose}
-            aria-labelledby="recommender-dialog-title"
-            aria-describedby="recommender-dialog-description"
-          >
-            <DialogTitle id="recommender-dialog-title">Recommended Songs</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="recommender-dialog-description">
-                {RecommenderResult ? RecommenderResult : "No recommendations available."}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleRecommenderClose} color="primary">
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <Box component="form" onSubmit={handleSubmitMakeSong} noValidate sx={{ mt: 1 }}>
-            <Typography component="h1" variant="h6" align="left" fontWeight={'bold'} color = "white" gutterBottom>
-            Song Generator
-            </Typography>
+          <Box component="form" onSubmit={handleSubmitMakeSong} noValidate sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',}}>
             <TextField
               margin="normal"
-              fullWidth
+              width="30rem"
               id="makesong"
               label="Enter a song"
               name="makesong"
-              autoComplete="Never gonna give you up"
               autoFocus
             />
             <Button
               type="submit"
-              fullWidth
+              width="30rem"
               variant="contained"
               sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
             >
@@ -188,26 +158,17 @@ export default function SongGeneration() {
             <Grid container>
             </Grid>
           </Box>
-          <Dialog
-            open={MakeSongDialogOpen}
-            onClose={handleMakeSongClose}
-            aria-labelledby="makesong-dialog-title"
-            aria-describedby="makesong-dialog-description"
-          >
-            <DialogTitle id="makesong-dialog-title">Make Songs</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="makesong-dialog-description">
-                {MakeSongResult ? MakeSongResult : "Unable to make song."}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleMakeSongClose} color="primary">
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
-          </Container>
-          </Container>
+        </Box>
+
+          <Card
+          sx={{
+            height:'20em',
+            width:'40rem',
+            overflow: 'auto'
+          }}
+          >{RecommenderResult ? RecommenderResult : "No recommendations available."}</Card>
+        </Grid> 
+
       </Container>
     </ThemeProvider>
   );

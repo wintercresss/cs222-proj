@@ -4,6 +4,8 @@ import { Button, Container, CssBaseline } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
 
 const get_search_history_api = "http://127.0.0.1:5002/get_searches"
 
@@ -40,10 +42,10 @@ export default function MyProfile() {
           <CssBaseline/>
             <Box
             sx={{
-              marginTop: '15rem',
+              marginTop: '10rem',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
+              justifyContent: 'left',
               alignItems: 'center',
             }}
             >
@@ -52,15 +54,19 @@ export default function MyProfile() {
                   Welcome {localStorage.getItem('username')}!
                 </Typography>
               </LinearGradient>
-                <Box
+            </Box>
+
+            <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
+            <Card
                 sx={{
+                  marginLeft: '14rem',
                   marginTop: '5rem',
                   display: 'flex',
                   flexDirection: 'column',
                   textAlign: 'left',
                   justifyContent: 'center',
                   width: '30rem',
-                  height: '15rem',
+                  height: '22rem',
                   borderRadius: 5,
                   bgcolor: '#eff0ef',
                 }}
@@ -80,11 +86,12 @@ export default function MyProfile() {
                   <Typography component="h5" variant="h5" fontWeight={'medium'} marginBottom={'10px'} marginLeft={'25px'}>
                     Favourite Genre: {localStorage.getItem('fav_genre')}
                   </Typography>
-                </Box>
+            </Card>
 
-                <Box
+            <Card
                 sx={{
                   marginTop: '5rem',
+                  marginLeft: '7rem',
                   display: 'flex',
                   flexDirection: 'column',
                   textAlign: 'center',
@@ -93,6 +100,7 @@ export default function MyProfile() {
                   height: '22rem',
                   borderRadius: 5,
                   bgcolor: '#eff0ef',
+                  overflow: 'auto'
                 }}>
                   
                   <Typography component="h5" variant="h5" fontWeight={'medium'} marginBottom={'10px'} marginLeft={'25px'}>
@@ -101,8 +109,8 @@ export default function MyProfile() {
                       <li>{search.search_query}</li>
                     ))}
                   </Typography>
-                </Box>
-            </Box>
+                </Card>
+            </Grid>
         </Container>
   );
 }
