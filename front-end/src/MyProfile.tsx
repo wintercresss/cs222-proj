@@ -56,10 +56,9 @@ export default function MyProfile() {
               </LinearGradient>
             </Box>
 
-            <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
+            <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
             <Card
                 sx={{
-                  marginLeft: '14rem',
                   marginTop: '5rem',
                   display: 'flex',
                   flexDirection: 'column',
@@ -90,20 +89,20 @@ export default function MyProfile() {
 
             <Card
                 sx={{
+                  marginLeft: '10rem',
                   marginTop: '5rem',
-                  marginLeft: '7rem',
                   display: 'flex',
                   flexDirection: 'column',
-                  textAlign: 'center',
-                  justifyContent: 'left',
+                  textAlign: 'left',
+                  justifyContent: 'center',
                   width: '30rem',
                   height: '22rem',
                   borderRadius: 5,
                   bgcolor: '#eff0ef',
-                  overflow: 'auto'
+                  overflow: 'auto',
                 }}>
                   
-                  <Typography component="h5" variant="h5" fontWeight={'medium'} marginBottom={'10px'} marginLeft={'25px'}>
+                  <Typography component="h5" variant="h5" fontWeight={'medium'} marginLeft={'25px'}>
                     Search History
                     {history.map(search => (
                       <li>{search.search_query}</li>

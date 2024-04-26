@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,6 +9,7 @@ import Card from  '@mui/material/Card';
 import { Typography } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients';
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const filterOptions = createFilterOptions({
   matchFrom: 'any',
@@ -34,12 +34,14 @@ const fetch_songs_api = 'http://127.0.0.1:5002/get_all_songs';
 
 export default function WordCloud() {
   const [wordcloudImage, setWordcloudImage] = useState('');
-  
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const body = formData.get('lyrics');
     var lyrics = "Not Found";
+    setLoading(true);
     try {
       const response = await fetch(search_lyric_api, {
         method: 'POST',
@@ -80,6 +82,8 @@ export default function WordCloud() {
       console.log("Word cloud image update")
     } catch (error) {
       console.error("Failed to fetch wordcloud data:", error);
+    } finally {
+      setLoading(false); // Stop loading regardless of the result
     }
     
     
@@ -120,44 +124,47 @@ export default function WordCloud() {
           <p>You can generate a Wordcloud from a song</p>
           <p>Wordclouds may take a couple seconds to generate</p>
         </Box>
-        <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
-        <Card>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          noValidate
-          marginLeft="15rem"
-          marginRight="8rem"
-          sx={{ width:"15rem", height:"30rem" }}
-        >
-          <Autocomplete
-                      disablePortal
-                      options={songOptions}
-                      filterOptions={filterOptions}
-                      renderInput={(params) => <TextField {...params} label="Enter a song"
-                      name="lyrics" 
-            />}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            marginTop="10rem"
-            sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
-          >
-            Generate Wordcloud
-          </Button>
-        </Box>
-        </Card>
-        <Card
-        marginLeft="10rem"
-        sx={{
-          width:"50rem",
-          height:"30rem"
-        }}
-        >
-          {wordcloudImage && <img src={wordcloudImage} alt="Wordcloud" style={{ height: '100%', width: '100%' }} />}
-        </Card>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Grid item xs={12} md={6}>
+            <Card sx={{ width: "100%", height: "30rem" }}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              marginLeft="15rem"
+              marginRight="8rem"
+              marginTop="10rem"
+              sx={{ width:"15rem", height:"30rem" }}
+            >
+              <Autocomplete
+                          disablePortal
+                          options={songOptions}
+                          filterOptions={filterOptions}
+                          renderInput={(params) => <TextField {...params} label="Enter a song"
+                          name="lyrics" 
+                />}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                marginTop="10rem"
+                sx={{ mt: 3, mb: 2, bgcolor: '#456789', '&:hover': { bgcolor: 'purple' } }}
+              >
+                Generate Wordcloud
+              </Button>
+            </Box>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Card sx={{ width: "100%", height: "30rem" }}>
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              wordcloudImage && <img src={wordcloudImage} alt="Wordcloud" style={{ height: '100%', width: '100%' }} />
+            )}
+            </Card>
+          </Grid>
         </Grid>
     </ThemeProvider>
   );
