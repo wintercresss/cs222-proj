@@ -82,7 +82,9 @@ export default function SongGeneration() {
 
       const data = await response.json();
       console.log(data.song);
-      setRecommenderResult(data.song);
+      setRecommenderResult(data.song.split('\n').map((line, index) => (
+        <div>{line}</div>
+      )));
     } catch (error) {
       console.error("Failed to generate song")
     } finally {

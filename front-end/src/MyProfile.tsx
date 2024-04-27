@@ -57,9 +57,13 @@ export default function MyProfile() {
             </Box>
 
             <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '0px' }}>
-            <Card
+              <Card>
+              <Typography component="h5" variant="h5" fontWeight={'medium'}>
+                    Profile
+              </Typography>
+              <Card
                 sx={{
-                  marginTop: '5rem',
+                  marginTop: '1rem',
                   display: 'flex',
                   flexDirection: 'column',
                   textAlign: 'left',
@@ -86,11 +90,15 @@ export default function MyProfile() {
                     Favourite Genre: {localStorage.getItem('fav_genre')}
                   </Typography>
             </Card>
+              </Card>
 
+            <Card sx={{marginLeft:"10rem"}}>
+            <Typography component="h5" variant="h5" fontWeight={'medium'}>
+                    Search History
+              </Typography>
             <Card
                 sx={{
-                  marginLeft: '10rem',
-                  marginTop: '5rem',
+                  marginTop: '1rem',
                   display: 'flex',
                   flexDirection: 'column',
                   textAlign: 'left',
@@ -103,12 +111,13 @@ export default function MyProfile() {
                 }}>
                   
                   <Typography component="h5" variant="h5" fontWeight={'medium'} marginLeft={'25px'}>
-                    Search History
                     {history.map(search => (
                       <li>{search.search_query}</li>
                     ))}
                   </Typography>
                 </Card>
+            </Card>
+            
             </Grid>
         </Container>
   );

@@ -266,7 +266,7 @@ export default function SongSearch() {
                 <Card sx={{ width: "100%", height: "30rem" }}>{searchBoxes}</Card>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Card sx={{ width: "100%", height: "30rem" }}>{searchResult}</Card>
+                <Card sx={{ width: "100%", height: "30rem", overflow:"auto" }}>{searchResult}</Card>
               </Grid>
             </Grid>
         </Box>
