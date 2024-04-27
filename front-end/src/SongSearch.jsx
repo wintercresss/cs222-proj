@@ -11,10 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LinearGradient } from 'react-text-gradients';
 import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
+
 
 const filterOptions = createFilterOptions({
   matchFrom: 'any',
@@ -115,10 +112,9 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      const songString = data.slice(0,9).join('/n');
-      setSearchResult(songString.split('/n').map((line, index) => (
-        <div>{line}</div>
-      )))
+      setSearchResult(data.map((line, index) => (
+        <div key={index}>{index + 1}. {line}</div>
+      )));
     } catch (error) {
       setSearchResult("None")
     }
@@ -146,11 +142,9 @@ export default function SongSearch() {
       }
 
       const data = await response.json();
-      
-      const artistsString = data.slice(0,9).join('/n');
-      setSearchResult(artistsString.split('/n').map((line, index) => (
-        <div>{line}</div>
-      )))
+      setSearchResult(data.map((line, index) => (
+        <div key={index}>{index + 1}. {line}</div>
+      )));
     } catch (error) {
       setSearchResult("No artists found")
     }
@@ -255,32 +249,27 @@ export default function SongSearch() {
       <Container component="main" maxWidth={false} sx={{maxHeight: 'none'}}>
         <CssBaseline />
         <Box
-  sx={{
-    marginTop: '5rem',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  }}
->
-  <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
-    <Typography component="h1" variant="h3" fontWeight={'bold'}>
-      Welcome to Search page!
-    </Typography>
-  </LinearGradient>
-  <Grid container spacing={2} alignItems="center" justifyContent="left" style={{ marginTop: '0px' }}>
-  <Card variant="outlined" sx={{
-    marginTop: '2rem',
-    marginLeft: '8rem'
-  }}>{searchBoxes}</Card>
-  <Card variant="outlined" sx={{
-    marginTop: '2rem',
-    marginLeft: '8rem',
-    width: '50rem',
-    height: '28rem',
-    overflow: 'auto'
-  }}>{searchResult}</Card>
-  </Grid>
-</Box>
+          sx={{
+            marginTop: '5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <LinearGradient gradient={['to left', '#17acff ,#ff68f0']}>
+            <Typography component="h1" variant="h3" fontWeight={'bold'}>
+              Welcome to Search page!
+            </Typography>
+          </LinearGradient>
+            <Grid container spacing={2} alignItems="center" justifyContent="center" marginTop={"2rem"}>
+              <Grid item xs={12} md={6}>
+                <Card sx={{ width: "100%", height: "30rem" }}>{searchBoxes}</Card>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Card sx={{ width: "100%", height: "30rem" }}>{searchResult}</Card>
+              </Grid>
+            </Grid>
+        </Box>
       </Container>
     </ThemeProvider>
   );
