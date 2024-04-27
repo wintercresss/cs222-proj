@@ -128,7 +128,7 @@ def lyrics_wordcloud():
         lyrics_data = request.get_json()
         songs = lyrics_data.get('lyrics')
         combined_string = ' '.join(songs)
-        lyrics_cloud = WordCloud( height = 500, width = 1000, background_color= 'yellow').generate(combined_string)
+        lyrics_cloud = WordCloud( height = 500, width = 1000, background_color= 'white').generate(combined_string)
         
         plot.figure(figsize=(20,10))
         plot.axis('off') # Remove the axes from the image to not clutter the image
