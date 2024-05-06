@@ -13,7 +13,7 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
      - If yarn not installed:
           - Run: brew install yarn or npm install -g yarn
      - Then, run: yarn
-     - Run: yarn add react-router-dom
+     - Run: yarn add react-router-dom and yarn add framer-motion
      - Run: npm run-script dev
 
 
