@@ -22,4 +22,4 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
 Amy Bisalputra : Frontend Team Member - UI/UX Programming \
 Yongzheng Yang: Frontend Team Member - Front-end and Back-end integration \
 Ayush Goyal: Backend Team Member - Song Generation, Recommendation, Wordcloud feature \
-Leo Mak: Backend Team Member - Password Encryption, Song search history database, All search queries \
+Leo Mak: Backend Team Member - Password Encryption, Song search history database, All search queries 
