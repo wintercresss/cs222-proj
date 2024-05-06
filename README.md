@@ -20,6 +20,6 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
 # Role Assignments:
 
 Amy Bisalputra : Frontend Team Member - UI/UX Programming \
-Yongzheng Yang: Frontend Team Member - Front-end and Back-end integration \
+Yongzheng Yang: Frontend Team Member - Front-end and Back-end integration and UI/UX design \
 Ayush Goyal: Backend Team Member - Song Generation, Recommendation, Wordcloud feature \
 Leo Mak: Backend Team Member - Password Encryption, Song search history database, All search queries 
