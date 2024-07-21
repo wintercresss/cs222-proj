@@ -1,4 +1,4 @@
-This is a copy of a Spotify assistant app I made for my CS222 course. Alongside myself, I was on a team with Ayush Goyal, Yongzheng Yang, Amy Bisalputra. For this project, I was responsible for the backend, including the password encryption, song search history database, and all search queries
+This is a copy of a Spotify assistant app I made for my CS222 course. Alongside myself, I was on a team with Ayush Goyal, Yongzheng Yang, and Amy Bisalputra. For this project, I was responsible for the backend, including the password encryption, song search history database, and all search queries
 
 ## How to run the application from terminal?
 ### Run Backend 
