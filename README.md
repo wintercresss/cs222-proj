@@ -1,5 +1,4 @@
-Project Plan:
-https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/edit?usp=sharing
+This is a copy of a Spotify assistant app I made for my CS222 course. Alongside myself, I was on a team with Ayush Goyal, Yongzheng Yang, Amy Bisalputra. For this project, I was responsible for the backend, including the password encryption, song search history database, and all search queries
 
 ## How to run the application from terminal?
 ### Run Backend 
@@ -13,11 +12,3 @@ https://docs.google.com/document/d/1NOHWHTBDcgTUKtibqWub1TTmUhTgP8-A5BsEef_DGlg/
      - Then, run: yarn
      - Run: yarn add react-router-dom and yarn add framer-motion
      - Run: npm run-script dev
-
-
-# Role Assignments:
-
-Amy Bisalputra : Frontend Team Member - UI/UX Programming \
-Yongzheng Yang: Frontend Team Member - Front-end and Back-end integration and UI/UX design \
-Ayush Goyal: Backend Team Member - Song Generation, Recommendation, Wordcloud feature \
-Leo Mak: Backend Team Member - Password Encryption, Song search history database, All search queries 
